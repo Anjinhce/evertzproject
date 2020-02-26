@@ -507,7 +507,9 @@ app.get('/secret/travel_edit/:id',function(req,res)
 app.post('/emp_search',urlencodedParser, function(req, res) {
 
     var emp_id=req.body.emp_id;
-    var empty_msg;
+    var new_limit;
+    page_no=page_no+1;
+    new_limit=(page_no*10);
    
     mysqlConnection.query("SELECT travel_history.ID,employee.EMP_ID,employee.FIRTS_NAME,travel_history.FROM_DATE,travel_history.TO_DATE,region.NAME as Depature,region.NAME as Destination,travel_type.NAME as Travel_type,customer.NAME as Customer,travel_history.FLIGHT_DETAILS_PATH as Flight from employee,travel_type,travel_history,region,customer where employee.ID=travel_history.EMP_ID and region.ID=travel_history.DEPATURE_ID and region.ID=travel_history.DEPATURE_ID and travel_type.ID=travel_history.TRAVEL_TYPE_ID and customer.ID=travel_history.CUSTOMER_ID and employee.EMP_ID = '"+emp_id+"'",function(err,result){
         if(err)
@@ -523,7 +525,7 @@ mysqlConnection.query("SELECT region.NAME as Destination  from employee,travel_h
             totalpage = result.length;
            
 
-            obj = {t_data: result,des : result1,status : 'true',tpage : totalpage };
+            obj = {t_data: result,des : result1,status : 'true',tpage : totalpage ,page_no : page_no};
                
 
             console.log(obj);
@@ -533,6 +535,40 @@ mysqlConnection.query("SELECT region.NAME as Destination  from employee,travel_h
 })
   
 });
+
+
+app.get('/next_travel',function(req,res){
+
+    var new_limit;
+    page_no=page_no+1;
+    new_limit=(page_no*10);
+    mysqlConnection.query("SELECT travel_history.ID,employee.EMP_ID,employee.FIRTS_NAME,travel_history.FROM_DATE,travel_history.TO_DATE,region.NAME as Depature,region.NAME as Destination,travel_type.NAME as Travel_type,customer.NAME as Customer,travel_history.FLIGHT_DETAILS_PATH as Flight from employee,travel_type,travel_history,region,customer where employee.ID=travel_history.EMP_ID and region.ID=travel_history.DEPATURE_ID and region.ID=travel_history.DEPATURE_ID and travel_type.ID=travel_history.TRAVEL_TYPE_ID and customer.ID=travel_history.CUSTOMER_ID limit "+new_limit+" , 10",function(err,result){
+        if(err)
+        {
+            throw err
+        }
+mysqlConnection.query("SELECT region.NAME as Destination  from employee,travel_history,region,customer where employee.ID=travel_history.EMP_ID and  region.ID=travel_history.DESTINATION_ID limit "+new_limit+" , 10 ",function(ree,result1){
+    if(err) throw err
+
+
+        else
+        {
+            totalpage = result.length;
+           
+
+            obj = {t_data: result,des : result1,status : 'true',tpage : totalpage,page_no : page_no };
+               
+              if(page_no==totalpage){
+
+                page_no = 0;
+              }
+            console.log(obj);
+            res.render('../secret/travel_display', obj);
+        }
+    })
+})
+})
+
 
 
 
