@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dark Bootstrap Admin by Bootstrapious.com</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Custom Font Icons CSS-->
+    <link rel="stylesheet" href="css/font.css">
+    <!-- Google fonts - Muli-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+  </head>
+  <body>
+    <div class="login-page">
+      <div class="container d-flex align-items-center" style="max-width: 100%;padding:0px">
+        <div class="form-holder has-shadow ht100" style="margin-bottom: 0px;">
+          <div class="row ht100" style="flex-direction: column;align-items: flex-end;">
+            <!-- Form Panel    -->
+            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 ht100">
+              <div class="form d-flex align-items-center" style="padding-left: 30px !important;padding-right: 40px !important;">
+                <div class="content">
+                  <div style="width:100%;text-align: center;margin-bottom: 80px;"><img src="http://localhost:1915/img/0.png"></div>
+                  <form method="post" class="form-validate mb-4" action="loginAction" style="margin-right:0px;max-width: 100%;">
+                    <div class="form-group">
+                      <div class="material-textfield blue" style="width:100%;margin-left: 0px;padding-top:0px">
+                        <input type="text" name="username" required/>
+                        <label data-content="Username">Username</label>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="material-textfield blue" style="width:100%;margin-left: 0px;padding-top:0px">
+                        <input type="text" name="password" required/>
+                        <label data-content="Password">Password</label>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-submit" style="margin-left: 0px;width:100%">Login</button>
+                    
+                  </form>
+                  <div>
+                      <h3 class="error-tag">Invalid Account Details</h3>
+                  </div>
+                  <div style="width:100%;text-align: center;">
+                  <a href="#" class="forgot-pass">Forgot Password?</a><br><br><small>Do not have an account? </small><a href="register.html" class="signup">Signup</a>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- JavaScript files-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+    <script src="js/front.js"></script>
+  </body>
+</html>
