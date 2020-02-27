@@ -891,6 +891,60 @@ app.post('/leave_application',urlencodedParser,function(req,res){
    // ********************************************* leave management stopes *********************************
 
 
+
+
+   //******************************Training Management startrs ***********************************/
+
+   app.post('secret/training_add/train_add',urlencodedParser,function(req,res){
+
+    var holi_add = req.body;
+  
+    mysqlConnection.query("insert into holiday(NAME,DATE,COUNTRY_ID) VALUES('"+holi_add.holiday_name+"','"+holi_add.holiday_date+"','"+holi_add.country_id+"')",function(err){
+  
+      if(err){
+          throw err
+      }
+      else{
+          console.log("Record Inserted");
+          
+  
+      }
+    })
+   
+    res.redirect("../secret/holiday");
+  
+  
+    })
+
+    app.get('/secret/training_add', function(req, res) {
+        
+               res.render('../secret/training_add');
+            
+        })
+    
+
+        app.post('/train_add',urlencodedParser,upload.single('video'),upload.single('doc'),function(req,res,next){
+          //  var fileinfo=req.file.filename;
+            var tdata = req.body;
+            console.log(tdata);
+        
+       
+                res.redirect("../secret/training_add");
+              
+            })
+        
+           
+
+
+
+
+
+
+
+    //******************************Training Management startrs ***********************************/
+
+
+
    
 
 
