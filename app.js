@@ -338,6 +338,11 @@ mysqlConnection.query("select * from  travel_type",function(err,result2){
 
   app.get('/secret/travel_display', function(req, res) {
 
+    var new_limit;
+    page_no=page_no+1;
+    new_limit=(page_no*10);
+
+
     mysqlConnection.query("select count(*) as tcount from travel_history",function(err,count){
         if(err) throw err
 mysqlConnection.query("SELECT travel_history.ID,employee.EMP_ID,employee.FIRTS_NAME,travel_history.FROM_DATE,travel_history.TO_DATE,region.NAME as Depature,region.NAME as Destination,travel_type.NAME as Travel_type,customer.NAME as Customer,travel_history.FLIGHT_DETAILS_PATH as Flight from employee,travel_type,travel_history,region,customer where employee.ID=travel_history.EMP_ID and region.ID=travel_history.DEPATURE_ID and region.ID=travel_history.DEPATURE_ID and travel_type.ID=travel_history.TRAVEL_TYPE_ID and customer.ID=travel_history.CUSTOMER_ID limit 0,10",function(err,result){
@@ -352,12 +357,12 @@ mysqlConnection.query("SELECT region.NAME as Destination  from employee,travel_h
         else
         {
 
-            totalpage = count[0].tcount;
+            totalpage = result.length;
             
           
 
 
-            obj = {t_data: result,des : result1 ,status : 'false',tpage : totalpage};
+            obj = {t_data: result,des : result1 ,status : 'false',tpage : totalpage,page_no : page_no };
                
 
             console.log(obj);
