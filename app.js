@@ -164,6 +164,7 @@ app.get('/secret/edit-details/:id',function(req,res)
         {
             emp_data={my_data :result}
             res.render('../secret/edit-details',emp_data);
+            
         }
     })
 })
@@ -187,8 +188,10 @@ app.post('/loginAction',urlencodedParser,function(req,res)
             else
             {
                 req.session.isAuthenticated=true
-                res.cookie('name', result[0].id, {expire: 36000000 + Date.now()});
-                res.redirect('../secret/payroll')
+                res.cookie('name','true',{expire:36000000+Date.now()});
+                res.cookie('username', req.body.username, {expire: 36000000 + Date.now()});
+                res.redirect('../secret/leave_home')
+                
             }
         }
     })
@@ -433,6 +436,8 @@ mysqlConnection.query("DELETE FROM travel_history WHERE ID='"+delete_id+"'",func
 if(err){
     throw err
 }
+
+
 else{
 
     
@@ -754,6 +759,141 @@ else{
 
 
 });
+
+
+// *****************************************leave management  starts****************************************** 
+
+
+
+//insert querry for leave application form
+app.post('/leave_application',urlencodedParser,function(req,res){
+
+    var leave_add = req.body;
+     
+    //calculate duration between dates
+      var from=new Date(leave_add.leave_from);
+      var to=new Date(leave_add.leave_to);
+       //To calculate the time difference of two dates 
+      var difference_in_time = to.getTime() - from.getTime(); 
+       //To calculate the no. of days between two dates 
+      var difference_in_days = difference_in_time / (1000 * 3600 * 24); 
+ 
+      //console.log(req.body);
+      mysqlConnection.query("SELECT employee.ID, employee.EMP_ID from employee ,user WHERE employee.ID=user.EMP_ID and user.USERNAME='"+req.cookies['username']+"' ",function(err1,result1)
+    {
+        if(err1)
+        {
+            throw err1
+        }
+
+    
+        mysqlConnection.query("insert into leave_management(EMP_ID,FROM_DATE,TO_DATE,DESCRIPTION,LEAVE_TYPE_ID,STATUS,DURATION) VALUES('"+result1[0].ID+"','"+leave_add.leave_from+"','"+leave_add.leave_to+"','"+leave_add.description+"','"+leave_add.leave_id+"','"+ 0 +"','"+difference_in_days+"')",function(err){
+ 
+      if(err){
+          throw err
+      }
+      else{
+          console.log("Record Inserted");
+      }
+    })
+})
+
+    res.redirect("../secret/leave_home");
+
+
+   })
+
+//retrieving data for leave history and leave details section
+  app.get('/secret/leave_home', function(req, res) {
+
+    mysqlConnection.query("SELECT employee.ID, employee.EMP_ID from employee ,user WHERE employee.ID=user.EMP_ID and user.USERNAME='"+req.cookies['username']+"' ",function(err1,result1)
+    {
+        if(err1)
+        {
+            throw err1
+        }
+        else
+        {   
+            console.log(result1[0].ID);
+            mysqlConnection.query("SELECT * FROM leave_management, leave_type WHERE leave_type.ID=leave_management.LEAVE_TYPE_ID and EMP_ID='"+result1[0].ID+"' and REGION_id=1",function(err,result){
+                if(err)
+                {
+                    throw err
+                }
+                else
+                {
+                    obj = {leaveInfo: result, print1: result1};
+                   // console.log(obj.print1);
+                    res.render('../secret/leave_home', obj);
+                
+                }
+            })
+        }
+    })
+  });
+
+ //filling leave type name field of leave application form 
+  app.get('/secret/leave_home/:leave_types', function(req, res) {
+    var name=req.params.leave_types;
+    //console.log(name)
+
+   
+            mysqlConnection.query("SELECT NAME,ID from leave_type where NAME='"+name+"'",function(err,result){
+                if(err)
+                {
+                    throw err
+                }
+                else
+                {   
+                    obj = {id: result,print1: result1};
+                    res.render('../secret/leave_application', obj);
+                }
+            })
+  });
+
+//on click of Apply leave action
+  app.post('/secret/leave_home/myaction',urlencodedParser,function(req,res){
+
+    var leave_name = req.body.leaveName;
+    var leave_bal = req.body.leaveBalance;
+
+    if(leave_bal==0){
+        res.redirect("../leave_home");
+    }
+    else{
+        mysqlConnection.query("SELECT employee.EMP_ID from employee ,user WHERE employee.ID=user.EMP_ID and user.USERNAME='"+req.cookies['username']+"' ",function(err1,result1)
+    
+    {
+        
+        if(err1)
+        {
+            throw err1
+        }
+
+        //console.log(leave_name);
+        mysqlConnection.query("SELECT NAME,ID from leave_type where NAME='"+leave_name+"'",function(err,result){
+        if(err)
+        {
+            throw err
+        }
+        else
+        {   
+            obj = {id: result,print1:result1};
+           res.render('../secret/leave_application', obj);
+        }
+    })
+})
+    }
+   })
+
+
+
+   // ********************************************* leave management stopes *********************************
+
+
+   
+
+
 
 
 
