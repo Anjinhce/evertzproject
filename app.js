@@ -25,6 +25,8 @@ const session=require('express-session')
 const cookieParser = require('cookie-parser');
 
 const  blogRouter = require('./secret/file');
+const  appRoter = require('./secret/training');
+
 var app=express();
 const port = process.env.PORT || 1915;
 
@@ -37,6 +39,8 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(session({secret: 'qweasdzxc',saveUninitialized:true, resave: false}))
 app.use(cookieParser());
 app.use('/blogs',blogRouter);
+app.use('/training',appRoter);
+
 
 var dir = path.join(__dirname, 'public');
 
@@ -895,54 +899,37 @@ app.post('/leave_application',urlencodedParser,function(req,res){
 
    //******************************Training Management startrs ***********************************/
 
-   app.post('secret/training_add/train_add',urlencodedParser,function(req,res){
+   app.get('/secret/training_add', function(req, res) {
+        
+    res.render('../secret/training_add');
+ 
+})
 
-    var holi_add = req.body;
   
-    mysqlConnection.query("insert into holiday(NAME,DATE,COUNTRY_ID) VALUES('"+holi_add.holiday_name+"','"+holi_add.holiday_date+"','"+holi_add.country_id+"')",function(err){
-  
-      if(err){
-          throw err
-      }
-      else{
-          console.log("Record Inserted");
-          
-  
-      }
+app.get('/secret/training_display',function(req,res){
+
+    mysqlConnection.query('select * from training',function(err,result){
+       if(err) throw err
+else{
+
+    obj = {train_data: result};
+    res.render('../secret/training_display', obj);
+
+}
+
     })
+});
    
-    res.redirect("../secret/holiday");
-  
-  
-    })
 
-    app.get('/secret/training_add', function(req, res) {
-        
-               res.render('../secret/training_add');
-            
-        })
+  
+
+
+
+
+
+
+
     
-
-        app.post('/train_add',urlencodedParser,upload.single('video'),upload.single('doc'),function(req,res,next){
-          //  var fileinfo=req.file.filename;
-            var tdata = req.body;
-            console.log(tdata);
-        
-       
-                res.redirect("../secret/training_add");
-              
-            })
-        
-           
-
-
-
-
-
-
-
-    //******************************Training Management startrs ***********************************/
-
 
 
    

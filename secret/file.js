@@ -3,7 +3,7 @@ var router = express.Router();
 var multer = require('multer');
 const mysql=require("mysql")
 
-global.emp;
+
 
 var storage = multer.diskStorage({
 destination:function(req,file,cb){
@@ -63,7 +63,5 @@ else{
 
 })
    
-
-
     
 module.exports =router;
