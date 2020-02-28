@@ -965,4 +965,21 @@ if(err) throw err
 
 })
 
+app.get('/secret/training_enable/:id',function(req,res){
+
+var enable_id=req.params.id;
+mysqlConnection.query("UPDATE training set status=1 where ID="+enable_id+"",function(err,result){
+
+if(err) throw err
+else{
+
+    res.redirect('/secret/training_display');
+}
+})
+
+
+
+})
+
+
 
