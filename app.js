@@ -913,28 +913,56 @@ app.get('/secret/training_display',function(req,res){
 else{
 
     obj = {train_data: result};
+    console.log(obj);
     res.render('../secret/training_display', obj);
 
 }
 
     })
 });
+
+
+app.get('/secret/training_edit/:id',function(req,res)
+{
+    var train_id=req.params.id;
    
+    mysqlConnection.query("select * from training where training.ID="+train_id+"",function(err,result){
+      if(err) throw err
+      else{
 
-  
-
-
-
-
-
-
-
-    
-
-
-   
+        obj = {train_data: result};
+        res.render('../secret/training_edit', obj);
+    }
+})      
+});
 
 
+app.get("/secret/training_delete/:id",function(req,res){
+    var train_id=req.params.id;
 
+mysqlConnection.query("select *  from training where ID="+train_id+" ",function(err,resultD){
+if(err)throw err
+mysqlConnection.query("DELETE FROM  training WHERE ID='"+train_id+"'",function(err){
+if(err) throw err
+    else
+    {
+
+        fs.unlink('training_doc/'+resultD[0].DOCUMENT_PATH, function (err) {
+            if (err) throw err;
+            // if no error, file has been deleted successfully
+            console.log('File deleted!');
+
+
+
+        })
+
+        }
+
+        res.redirect('/secret/training_display');
+})
+
+})
+
+})
 
 
