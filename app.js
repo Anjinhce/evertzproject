@@ -968,18 +968,110 @@ if(err) throw err
 app.get('/secret/training_enable/:id',function(req,res){
 
 var enable_id=req.params.id;
-mysqlConnection.query("UPDATE training set status=1 where ID="+enable_id+"",function(err,result){
+ var sql = "UPDATE training SET training.status = IF( (select training.status from training WHERE training.ID = "+enable_id+")= 0, 1, 0) WHERE training.ID ="+enable_id+"";
 
+mysqlConnection.query(sql,function(err,result){
 if(err) throw err
-else{
 
+else{
     res.redirect('/secret/training_display');
 }
 })
 
-
-
 })
 
+//******************************training user***************************************************
+
+app.get('/secret/training_user',function(req,res){
+
+    mysqlConnection.query('select * from training where status=1',function(err,result){
+        if(err) throw err
+ else{
+ 
+     obj = {train_data: result};
+     console.log(obj);
+     res.render('../secret/training_user', obj);
+ 
+ }
+ })
+})
+
+//**************************************video play in training_user starts  */
 
 
+
+
+
+    app.get('/secret/video/:id', function(req, res) {
+
+     var video_id = req.params.id;  
+     
+     mysqlConnection.query("select VIDEO_PATH from  training where "+video_id+"",function(err,result){
+if(err) throw err
+else{
+
+   
+    const path =result[0].VIDEO_PATH;
+    
+    const stat = fs.statSync(path)
+    const fileSize = stat.size
+    const range = req.headers.range
+     
+    if (range) {
+    const parts = range.replace(/bytes=/, "").split("-")
+    const start = parseInt(parts[0], 10)
+    const end = parts[1]
+    ? parseInt(parts[1], 10)
+    : fileSize-1
+     
+    const chunksize = (end-start)+1
+    const file = fs.createReadStream(path, {start, end})
+    const head = {
+    'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+    'Accept-Ranges': 'bytes',
+    'Content-Length': chunksize,
+    'Content-Type': 'video/mp4',
+    }
+     
+    res.writeHead(206, head)
+    file.pipe(res)
+    } else {
+    const head = {
+    'Content-Length': fileSize,
+    'Content-Type': 'video/mp4',
+    }
+    res.writeHead(200, head)
+    fs.createReadStream(path).pipe(res)
+    }
+
+    
+   
+   
+
+}
+})
+    })
+
+
+//**************************************video play in training_user starts  */
+
+
+// **************************training download *******************starts 
+
+app.get('/secret/training_download/:id',function(req,res){
+
+    file_id=req.params.id
+mysqlConnection.query("select * FROM training WHERE ID='"+file_id+"'",function(err,result){
+if(err){
+    throw err
+}
+else{
+
+   
+   
+    res.download('training_doc/'+result[0].DOCUMENT_PATH);
+
+    console.log("dowload complted");
+   }
+})
+})
