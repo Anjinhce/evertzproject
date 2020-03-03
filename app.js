@@ -1005,52 +1005,24 @@ app.get('/secret/training_user',function(req,res){
     app.get('/secret/video/:id', function(req, res) {
 
      var video_id = req.params.id;  
-     
-     mysqlConnection.query("select VIDEO_PATH from  training where "+video_id+"",function(err,result){
+     mysqlConnection.query("select VIDEO_PATH from training where ID="+video_id+"",function(err,result){
 if(err) throw err
 else{
 
-   
-    const path =result[0].VIDEO_PATH;
-    
-    const stat = fs.statSync(path)
-    const fileSize = stat.size
-    const range = req.headers.range
-     
-    if (range) {
-    const parts = range.replace(/bytes=/, "").split("-")
-    const start = parseInt(parts[0], 10)
-    const end = parts[1]
-    ? parseInt(parts[1], 10)
-    : fileSize-1
-     
-    const chunksize = (end-start)+1
-    const file = fs.createReadStream(path, {start, end})
-    const head = {
-    'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-    'Accept-Ranges': 'bytes',
-    'Content-Length': chunksize,
-    'Content-Type': 'video/mp4',
-    }
-     
-    res.writeHead(206, head)
-    file.pipe(res)
-    } else {
-    const head = {
-    'Content-Length': fileSize,
-    'Content-Type': 'video/mp4',
-    }
-    res.writeHead(200, head)
-    fs.createReadStream(path).pipe(res)
-    }
 
-    
-   
-   
+
+ 
+     var path = result[0].VIDEO_PATH;
+     console.log("path file")
+ console.log(path);
+  res.writeHead(200,{'Content-Type':'video/mp4'});
+    var rs=fs.createReadStream(path);
+    rs.pipe(res);
 
 }
 })
-    })
+})
+
 
 
 //**************************************video play in training_user starts  */
@@ -1075,3 +1047,48 @@ else{
    }
 })
 })
+// **************************training download *******************ends
+
+//***************************Leave Management Admin starts *************
+
+
+//retrieving data for leave history of all employees for admin
+
+
+app.get('/secret/leave_admin', function(req, res) {
+  
+    mysqlConnection.query("SELECT employee.ID as EID, employee.FIRTS_NAME, employee.LAST_NAME, leave_management.FROM_DATE, leave_management.TO_DATE, leave_management.LEAVE_TYPE_ID, leave_type.NAME, leave_management.Duration, leave_management.ID FROM leave_management,leave_type,employee WHERE leave_management.LEAVE_TYPE_ID=leave_type.ID and leave_management.EMP_ID=employee.ID and leave_management.STATUS='0'",function(err,result){
+        if(err)
+        {
+            throw err
+        }
+        else
+        {
+            obj = {leaveInfo: result};
+           // console.log(obj.print1);
+            res.render('../secret/leave_admin', obj);
+        
+        }
+    })
+});
+
+//function to approve leave by admin
+app.post('/secret/leave_admin/myaction1',urlencodedParser,function(req,res){
+leaveRecId=req.body.leaveRecordId;
+mysqlConnection.query("UPDATE leave_management SET STATUS=1 WHERE ID='"+leaveRecId+"'",function(err,result){
+if(err)
+{
+    throw err
+}
+else
+{   
+    console.log(leaveRecId);
+    res.redirect("../leave_admin");
+}
+})
+});
+
+
+
+
+//***************************Leave Management Admin *****************stopes

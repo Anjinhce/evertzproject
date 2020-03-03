@@ -31,6 +31,7 @@ var upload = multer({storage : storage})
 app.post('/train_add',upload.single('training_doc'),function(req,res,next){
     var fileinfo=req.file.filename;
     var tdata = req.body;
+    
  mysqlConnection.query("INSERT INTO training(TITLE,VIDEO_PATH,DOCUMENT_PATH) VALUES('"+tdata.training_title+"','"+tdata.video_url+"','"+fileinfo+"')",function(err){
 if (err) throw err
 else{
