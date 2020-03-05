@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<BxfMessage id="urn:uuid:e81df19b-a498-68fd-267c-181e8e7a8498" dateTime="2019-02-11T00:00:00:00" messageType="Information" xmlns="http://smpte-ra.org/schemas/2021/2008/BXF" xmlns:pmcp="http://www.atsc.org/XMLSchemas/pmcp/2007/3.1" origin="Traffic System" originType="Traffic" userName="DublistScript" destination="Automation" destinationType="Automation">
+    <BxfData action="add">
+        <ContentTransfer transferId="urn:uuid:6f34fa21-63ff-3202-db79-a15c96ddd5d8" transferType="File transfer" priority="Normal">
+            <Content>
+                <NonProgramContent>
+                    <Details>
+                        <SpotType>COMMERCIAL</SpotType>
+                        <AdvertiserName>ABBVIE INC.</AdvertiserName>
+                        <Product>
+                            <Name>AbbVie Inc |</Name>
+                        </Product>
+                    </Details>
+                    <ContentMetaData>
+                        <ContentId>
+                            <HouseNumber>EVERTZ_USA16</HouseNumber>
+                            <AlternateId idType="ISCI Code">1TEST_1ABV7007000</AlternateId>
+                        </ContentId>
+                        <Name>AbbVie Inc |</Name>
+                        <UsagePolicy>
+                        </UsagePolicy>
+                    </ContentMetaData>
+                </NonProgramContent>
+            </Content>
+            <Source>
+                <Media>
+                    <BaseBand />
+                    <MediaLocation>
+                        <Location>
+                            <PhysicalAsset assetName="***BxfUnknown***">
+                                <MediaReferenceName>EVERTZ_USA16</MediaReferenceName>
+                            </PhysicalAsset>
+                        </Location>
+                        <SOM>
+                            <SmpteTimeCode>00:00:00:00</SmpteTimeCode>
+                        </SOM>
+                        <Duration>
+                            <SmpteDuration>
+                                <SmpteTimeCode>00:00:30:00</SmpteTimeCode>
+                            </SmpteDuration>
+                        </Duration>
+                    </MediaLocation>
+                </Media>
+            </Source>
+            <Destination>
+                <Media>
+                    <BaseBand />
+                    <MediaLocation>
+                        <Location>
+                            <AssetServer playoutAllowed="true" fileTransferAllowed="true">
+                            </AssetServer>
+                        </Location>
+                        <SOM>
+                            <SmpteTimeCode>00:00:00:00</SmpteTimeCode>
+                        </SOM>
+                        <Duration>
+                            <SmpteDuration>
+                                <SmpteTimeCode>00:00:30:00</SmpteTimeCode>
+                            </SmpteDuration>
+                        </Duration>
+                    </MediaLocation>
+                </Media>
+                <UsagePolicy>
+                </UsagePolicy>
+            </Destination>
+        </ContentTransfer>
+        <ContentTransfer transferId="urn:uuid:efaa82ea-f8a3-d74f-edbd-23e34c267201" transferType="File transfer" priority="Normal">
+            <Content>
+                <NonProgramContent>
+                    <Details>
+                        <SpotType>COMMERCIAL</SpotType>
+                        <AdvertiserName>OMAHA STEAKS</AdvertiserName>
+                        <Product>
+                            <Name>Omaha Creative Group, Inc. |</Name>
+                        </Product>
+                    </Details>
+                    <ContentMetaData>
+                        <ContentId>
+                            <HouseNumber>23TEST_ZBRK3718022H</HouseNumber>
+                            <AlternateId idType="ISCI Code">23TEST_ZBRK3718022</AlternateId>
+                        </ContentId>
+                        <Name>Omaha Creative Group, Inc. |</Name>
+                        <UsagePolicy>
+                        </UsagePolicy>
+                    </ContentMetaData>
+                </NonProgramContent>
+            </Content>
+            <Source>
+                <Media>
+                    <BaseBand />
+                    <MediaLocation>
+                        <Location>
+                            <PhysicalAsset assetName="***BxfUnknown***">
+                                <MediaReferenceName>23TEST_ZBRK3718022H</MediaReferenceName>
+                            </PhysicalAsset>
+                        </Location>
+                        <SOM>
+                            <SmpteTimeCode>00:00:00:00</SmpteTimeCode>
+                        </SOM>
+                        <Duration>
+                            <SmpteDuration>
+                                <SmpteTimeCode>00:01:00:00</SmpteTimeCode>
+                            </SmpteDuration>
+                        </Duration>
+                    </MediaLocation>
+                </Media>
+            </Source>
+            <Destination>
+                <Media>
+                    <BaseBand />
+                    <MediaLocation>
+                        <Location>
+                            <AssetServer playoutAllowed="true" fileTransferAllowed="true">
+                            </AssetServer>
+                        </Location>
+                        <SOM>
+                            <SmpteTimeCode>00:00:00:00</SmpteTimeCode>
+                        </SOM>
+                        <Duration>
+                            <SmpteDuration>
+                                <SmpteTimeCode>00:01:00:00</SmpteTimeCode>
+                            </SmpteDuration>
+                        </Duration>
+                    </MediaLocation>
+                </Media>
+                <UsagePolicy>
+                </UsagePolicy>
+            </Destination>
+        </ContentTransfer>
+        <ContentTransfer transferId="urn:uuid:08f5292a-2603-811d-d178-086209e4b600" transferType="File transfer" priority="Normal">
+            <Content>
+                <NonProgramContent>
+                    <Details>
+                        <SpotType>COMMERCIAL</SpotType>
+                        <AdvertiserName>OMAHA STEAKS</AdvertiserName>
+                        <Product>
+                            <Name>Omaha Creative Group, Inc. |</Name>
+                        </Product>
+                    </Details>
+                    <ContentMetaData>
+                        <ContentId>
+                            <HouseNumber>24TEST_ZBRK3718022H</HouseNumber>
+                            <AlternateId idType="ISCI Code">24TEST_ZBRK3718022</AlternateId>
+                        </ContentId>
+                        <Name>Omaha Creative Group, Inc. |</Name>
+                        <UsagePolicy>
+                        </UsagePolicy>
+                    </ContentMetaData>
+                </NonProgramContent>
+            </Content>
+            <Source>
+                <Media>
+                    <BaseBand />
+                    <MediaLocation>
+                        <Location>
+                            <PhysicalAsset assetName="***BxfUnknown***">
+                                <MediaReferenceName>24TEST_ZBRK3718022H</MediaReferenceName>
+                            </PhysicalAsset>
+                        </Location>
+                        <SOM>
+                            <SmpteTimeCode>00:00:00:00</SmpteTimeCode>
+                        </SOM>
+                        <Duration>
+                            <SmpteDuration>
+                                <SmpteTimeCode>00:01:00:00</SmpteTimeCode>
+                            </SmpteDuration>
+                        </Duration>
+                    </MediaLocation>
+                </Media>
+            </Source>
+            <Destination>
+                <Media>
+                    <BaseBand />
+                    <MediaLocation>
+                        <Location>
+                            <AssetServer playoutAllowed="true" fileTransferAllowed="true">
+                            </AssetServer>
+                        </Location>
+                        <SOM>
+                            <SmpteTimeCode>00:00:00:00</SmpteTimeCode>
+                        </SOM>
+                        <Duration>
+                            <SmpteDuration>
+                                <SmpteTimeCode>00:01:00:00</SmpteTimeCode>
+                            </SmpteDuration>
+                        </Duration>
+                    </MediaLocation>
+                </Media>
+                <UsagePolicy>
+                </UsagePolicy>
+            </Destination>
+        </ContentTransfer>
+        <ContentTransfer transferId="urn:uuid:ae98aa1a-f66e-2a6e-86de-6f9c1e174507" transferType="File transfer" priority="Normal">
+            <Content>
+                <NonProgramContent>
+                    <Details>
+                        <SpotType>COMMERCIAL</SpotType>
+                        <AdvertiserName>NATIONAL GEOGRAPHIC CHANNEL</AdvertiserName>
+                        <Product>
+                            <Name>National Geographic Channel |</Name>
+                        </Product>
+                    </Details>
+                    <ContentMetaData>
+                        <ContentId>
+                            <HouseNumber>4TEST_21CF9914000H</HouseNumber>
+                            <AlternateId idType="ISCI Code">4TEST_21CF9914000</AlternateId>
+                        </ContentId>
+                        <Name>National Geographic Channel |</Name>
+                        <UsagePolicy>
+                        </UsagePolicy>
+                    </ContentMetaData>
+                </NonProgramContent>
+            </Content>
+            <Source>
+                <Media>
+                    <BaseBand />
+                    <MediaLocation>
+                        <Location>
+                            <PhysicalAsset assetName="***BxfUnknown***">
+                                <MediaReferenceName>4TEST_21CF9914000H</MediaReferenceName>
+                            </PhysicalAsset>
+                        </Location>
+                        <SOM>
+                            <SmpteTimeCode>00:00:00:00</SmpteTimeCode>
+                        </SOM>
+                        <Duration>
+                            <SmpteDuration>
+                                <SmpteTimeCode>00:00:30:00</SmpteTimeCode>
+                            </SmpteDuration>
+                        </Duration>
+                    </MediaLocation>
+                </Media>
+            </Source>
+            <Destination>
+                <Media>
+                    <BaseBand />
+                    <MediaLocation>
+                        <Location>
+                            <AssetServer playoutAllowed="true" fileTransferAllowed="true">
+                            </AssetServer>
+                        </Location>
+                        <SOM>
+                            <SmpteTimeCode>00:00:00:00</SmpteTimeCode>
+                        </SOM>
+                        <Duration>
+                            <SmpteDuration>
+                                <SmpteTimeCode>00:00:30:00</SmpteTimeCode>
+                            </SmpteDuration>
+                        </Duration>
+                    </MediaLocation>
+                </Media>
+                <UsagePolicy>
+                </UsagePolicy>
+            </Destination>
+        </ContentTransfer>
+        <ContentTransfer transferId="urn:uuid:c5253906-5f5a-7492-c268-3a7e2ae45d4c" transferType="File transfer" priority="Normal">
+            <Content>
+                <NonProgramContent>
+                    <Details>
+                        <SpotType>COMMERCIAL</SpotType>
+                        <AdvertiserName>MILLENNIUM ENTERTAINMENT</AdvertiserName>
+                        <Product>
+                            <Name>Millenia3 |</Name>
+                        </Product>
+                    </Details>
+                    <ContentMetaData>
+                        <ContentId>
+                            <HouseNumber>7TEST_ACCAP0298000H</HouseNumber>
+                            <AlternateId idType="ISCI Code">7TEST_ACCAP0298000</AlternateId>
+                        </ContentId>
+                        <Name>Millenia3 |</Name>
+                        <UsagePolicy>
+                        </UsagePolicy>
+                    </ContentMetaData>
+                </NonProgramContent>
+            </Content>
+            <Source>
+                <Media>
+                    <BaseBand />
+                    <MediaLocation>
+                        <Location>
+                            <PhysicalAsset assetName="***BxfUnknown***">
+                                <MediaReferenceName>7TEST_ACCAP0298000H</MediaReferenceName>
+                            </PhysicalAsset>
+                        </Location>
+                        <SOM>
+                            <SmpteTimeCode>00:00:00:00</SmpteTimeCode>
+                        </SOM>
+                        <Duration>
+                            <SmpteDuration>
+                                <SmpteTimeCode>00:00:15:00</SmpteTimeCode>
+                            </SmpteDuration>
+                        </Duration>
+                    </MediaLocation>
+                </Media>
+            </Source>
+            <Destination>
+                <Media>
+                    <BaseBand />
+                    <MediaLocation>
+                        <Location>
+                            <AssetServer playoutAllowed="true" fileTransferAllowed="true">
+                            </AssetServer>
+                        </Location>
+                        <SOM>
+                            <SmpteTimeCode>00:00:00:00</SmpteTimeCode>
+                        </SOM>
+                        <Duration>
+                            <SmpteDuration>
+                                <SmpteTimeCode>00:00:15:00</SmpteTimeCode>
+                            </SmpteDuration>
+                        </Duration>
+                    </MediaLocation>
+                </Media>
+                <UsagePolicy>
+                </UsagePolicy>
+            </Destination>
+        </ContentTransfer>
+    </BxfData>
+</BxfMessage>

@@ -73,7 +73,110 @@ var mysqlConnection=mysql.createConnection({
     user: 'root',
     password:'',
     database: 'evertzemployee'
+     multipleStatements: true
 })
+//***********************************************rohit code****************************************Starts
+
+const {
+    getHomePage
+} = require('./routes/index');
+
+const {
+    addUserPage,
+    addUser,
+    addEducation,
+    add_education_details,
+    addBank,
+    add_bank_details,
+    addExperience,
+    add_experience_details,
+    edit_personal_details,
+    edit_personal_details_page,
+    updateUser,
+
+    edit_education_details,
+    edit_education,
+    updateEducation,
+
+    edit_bank_details,
+    edit_bank,
+    updateBank,
+
+    edit_experience_details,
+    edit_experience,
+    updateExperience,
+
+    createUser,
+    deletePlayer,
+    editPlayer,
+    editPlayerPage,
+    viewEmployee,
+    viewEmployeePage,
+    payroll_page,
+    fetch_id,
+    logout,
+    login,
+    edit_details,
+    loginAction,
+    list_payroll,
+    prev_payroll,
+    next_payroll,
+    payroll_edit_action,
+    payroll_insert
+} = require('./routes/functions');
+
+app.get('/', getHomePage);
+app.get('/secret/add', addUserPage);
+app.get('/edit/:id', editPlayerPage);
+app.get('/delete/:id', deletePlayer);
+app.post('/secret/add-user',urlencodedParser, addUser);
+app.post('/edit/:id',urlencodedParser, editPlayer);
+app.get('/view/:id', viewEmployeePage);
+app.post('/view/:id',urlencodedParser, viewEmployee);
+app.get('/secret/payroll',payroll_page)
+app.get('/fetch_id',fetch_id)
+app.get("/logout",logout)
+app.get('/login',login)
+app.get('/secret/add-education/:id',addEducation)
+app.post('/secret/add_education_details',urlencodedParser , add_education_details)
+app.get('/secret/edit-details/:id',edit_details)
+
+//updating_education
+app.get('/secret/edit-education-details/:id/:emp_id', edit_education_details)
+app.get('/secret/edit-education/:id/:emp_id',edit_education)
+app.post('/secret/update-education/:edu_id',urlencodedParser,updateEducation)
+
+app.get('/secret/add-bank/:id',addBank)
+app.post('/secret/add_bank_details',urlencodedParser, add_bank_details)
+app.get('/secret/edit-bank-details/:id',edit_bank_details)
+app.get('/secret/edit-bank/:id',edit_bank)
+app.post('/secret/update_bank_details/:id',urlencodedParser,updateBank)
+
+app.get('/secret/add-experience/:id',addExperience)
+app.post('/secret/add_experience_details',urlencodedParser, add_experience_details)
+app.get('/secret/edit-experience-details/:id/:emp_id', edit_experience_details)
+app.get('/secret/edit-experience/:id/:emp_id',edit_experience)
+app.post('/secret/update_experience/:id/:emp_id',urlencodedParser,updateExperience)
+
+app.get('/secret/edit-personal-details/:id',edit_personal_details)
+app.get('/secret/edit-user/:id',edit_personal_details_page)
+app.post('/secret/update-user-details/:id',urlencodedParser,updateUser)
+
+app.get('/secret/create-user/:id', createUser)
+app.post('/loginAction',urlencodedParser,loginAction)
+app.get('/secret/list-payroll', list_payroll)
+app.get('/prev',prev_payroll)
+app.get('/next',next_payroll)
+app.post('/secret/edit-details/modifyDetails/:id',urlencodedParser,payroll_edit_action)
+app.post('/secret/myaction',urlencodedParser,payroll_insert)
+
+//***********************************************rohit code****************************************Ends
+
+
+
+
+global.mysqlConnection = mysqlConnection;
+
 
 app.all("/",function(req,res){
     res.redirect("secret/payroll");
