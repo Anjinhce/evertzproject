@@ -830,7 +830,7 @@ nav.navbar .tasks-list span {
   font-size: 0.95rem;
 }
 
-nav.navbar .tasks-list .progress {
+nav.navbar .tasks-list .progress_1 {
   height: 2px;
   margin-top: 10px;
   background: #444951;

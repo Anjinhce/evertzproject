@@ -126,6 +126,7 @@ const {
 } = require('./routes/functions');
 
 app.get('/', getHomePage);
+
 app.get('/secret/add', addUserPage);
 app.get('/edit/:id', editPlayerPage);
 app.get('/delete/:id', deletePlayer);
@@ -1192,12 +1193,45 @@ else
 });
 
 
+//*************************************find employee in main table starts */
 
 
-//***************************Leave Management Admin *****************stopes
+app.post('/emp_find',urlencodedParser, function(req, res) {
 
-//****************************View ALL Employesss**************** Starts*/
+    var emp_id=req.body.emp_id;
+    var new_limit;
+    page_no=page_no+1;
+    new_limit=(page_no*10);
+   
+   find_query = "SELECT employee.EMP_ID,employee.PHOTO_PATH,employee.FIRTS_NAME,employee.MIDDLE_NAME,employee.LAST_NAME,designation.DESIGNATION,employee.DATE_OF_JOIN,employee.DATE_OF_BIRTH,employee.P_EMAIL,employee.P_PHONE,employee.W_EMAIL,employee.W_PHONE from employee,gender,designation WHERE employee.GENDER_ID=gender.ID and designation.ID=employee.DESIGNATION_ID  and EMP_ID = '"+emp_id+"'";
+    mysqlConnection.query(find_query,function(err,result){
+        
+        if(err) throw err
+        
+         else
+        {
+            totalpage = result.length;
+           
+
+            obj = {users: result ,status :'true'};
+               
+
+            console.log(obj);
+            res.render('../secret/list-employee', obj);
+        }
+    
+});
+  
+});
 
 
 
-//****************************View ALL Employesss**************** Stopes*/
+
+
+
+
+
+//*************************************find employee in main table stopes*/
+
+
+
