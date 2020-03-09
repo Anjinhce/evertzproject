@@ -72,7 +72,7 @@ var mysqlConnection=mysql.createConnection({
     host:'localhost',
     user: 'root',
     password:'',
-    database: 'evertzemployee'
+    database: 'evertzemployee',
      multipleStatements: true
 })
 //***********************************************rohit code****************************************Starts
