@@ -601,28 +601,28 @@ module.exports = {
     },
     deletePlayer: (req, res) => {
         let playerId = req.params.id;
-        let getImageQuery = 'SELECT image from `players` WHERE id = "' + playerId + '"';
-        let deleteUserQuery = 'DELETE FROM players WHERE id = "' + playerId + '"';
+       // let getImageQuery = 'SELECT PHOTO_PATH from employee WHERE id = "' + playerId + '"';
+        let deleteUserQuery = 'DELETE FROM employee WHERE employee.ID = "' + playerId + '"';
 
-        mysqlConnection.query(getImageQuery, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
+        // mysqlConnection.query(getImageQuery, (err, result) => {
+        //     if (err) {
+        //         return res.status(500).send(err);
+        //     }
 
-            let image = result[0].image;
+            // let image = result[0].image;
 
-            fs.unlink(`public/assets/img/${image}`, (err) => {
-                if (err) {
-                    return res.status(500).send(err);
-                }
-                mysqlConnection.query(deleteUserQuery, (err, result) => {
-                    if (err) {
-                        return res.status(500).send(err);
-                    }
-                    res.redirect('/');
-                });
-            });
-        });
+            // fs.unlink(`public/assets/img/${image}`, (err) => {
+            //     if (err) {
+            //         return res.status(500).send(err);
+            //     }
+            //     mysqlConnection.query(deleteUserQuery, (err, result) => {
+            //         if (err) {
+            //             return res.status(500).send(err);
+            //         }
+            //         res.redirect('/');
+            //     });
+            // });
+        
     },
     viewEmployeePage: (req, res) => {
         let playerId = req.params.id;
