@@ -1256,5 +1256,38 @@ res.redirect('/');
 
 //*************************************find employee in main table stopes*/
 
+//*****************************ajax employee check   starts*/
+app.get('/emp_check',function(req,res)
+{
+   var emp_id=req.query.send_data;
+ 
+   
+    mysqlConnection.query("select EMP_ID from  employee where EMP_ID='"+emp_id+"'",function(err1,result1){
+        if(err1)
+        {
+            throw err1
+        }
+        else
+        {
+           
+          console.log(result1);
 
+
+          if(result1.length == 0){
+
+            res.send("employee not exists");
+          }
+          else{
+          
+            res.send("Employee ID is Alredy exists");
+
+          }
+}
+    })
+
+})
+
+
+
+//*****************************ajax employee check   stopes*/
 
