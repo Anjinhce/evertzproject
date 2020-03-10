@@ -146,11 +146,30 @@ pre {
 .no-padding-top {
   padding-top: 0 !important;
 }
-
+.rounded-circle
+{
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
 .no-padding-bottom {
   padding-bottom: 0 !important;
 }
-
+.table .thead-dark th
+{
+background:#1f2029 !important;
+}
+body
+{
+  background:#15161b !important;
+}
+.table td, .table th
+{
+  background:#1f2029 !important;
+}
+.table{
+  background: #1f2029 !important;
+}
 .no-margin {
   margin: 0 !important;
 }
@@ -498,6 +517,89 @@ position: relative;
 text-transform: uppercase;
 width: 100%;
 }
+
+.progress_1 {
+  display: inline-flex;
+  align-items: center;
+  counter-reset: step;
+  padding: 0px 25px 0px 25px;
+  margin: -50px 30px 0px 30px;
+  width: calc(100% - 60px);
+  color: #F2F2F2;
+  font-family: "Palanquin", sans-serif;
+  list-style: none;
+  text-transform: uppercase;
+}
+.progress__circle {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #F2F2F2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  flex-flow: column nowrap;
+}
+.progress__circle:before {
+  content: '\f00c';
+  font-family: 'FontAwesome';
+  font-size: 1.2em;
+  color: #fff;
+  margin-top: 0em;
+}
+.progress__circle:after {
+  text-align: center;
+  counter-increment: step;
+  margin-top: 0.5em;
+}
+.first-circle:after
+{
+  content: "Employee Details";
+}
+.second-circle:after
+{
+  content: "Education Details";
+}
+.third-circle:after
+{
+  content: "Bank Details";
+}
+.fourth-circle:after
+{
+  content: "Experience Details";
+}
+.progress__bar {
+  flex: 1;
+  height: 3px;
+  background: #F2F2F2;
+}
+.progress--done {
+  background: green;
+}
+.progress--active {
+  border: 5px solid green;
+  color: green;
+}
+
+.complete
+{
+  height: 60px;
+  width: 60px;
+}
+.complete:before
+{
+  font-size: 3.2em;
+  margin-top: -0.1em;
+}
+.employee-image
+{
+  width:100%;
+  text-align: center;
+}
+.set-border-bottom
+{
+  padding-bottom: 10px;
+  border-bottom: 1px solid #15161b;
+}
 .material-textfield label::before {
 content: attr(data-content);
 position: relative;
@@ -513,6 +615,23 @@ position: absolute;
 transition: all 0.2s ease;
 width: 0;
 will-change: width, left;
+}
+select
+{
+  width: 100%;
+  background: none;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  color:white;
+}
+option{
+  color:black;
+}
+.upload-image
+{
+  text-align: left;
+  cursor: pointer;
 }
 .material-textfield label::before, .material-textfield input[required]:focus ~ label::before {
 font-size: 0.75rem;
@@ -610,8 +729,8 @@ color: rgba(255, 255, 255, 0.5);
           border: none;
           padding-left:15px;
           padding-right:15px;
-          padding-top:5px;
-          padding-bottom: 5px;
+          padding-top:10px;
+          padding-bottom: 10px;
           font-size: 12px;
           font-weight:600 !important;
       }
@@ -830,7 +949,7 @@ nav.navbar .tasks-list span {
   font-size: 0.95rem;
 }
 
-nav.navbar .tasks-list .progress_1 {
+nav.navbar .tasks-list .progress {
   height: 2px;
   margin-top: 10px;
   background: #444951;
@@ -1033,7 +1152,8 @@ nav#sidebar li a:hover {
 }
 
 nav#sidebar li a:hover i {
-  color: #DB6574;
+  color: #FFF200;
+  opacity:0.5;
 }
 
 nav#sidebar li a i {
@@ -1080,7 +1200,7 @@ nav#sidebar li.active > a {
 }
 
 nav#sidebar li.active i {
-  color: #DB6574;
+  color: #FFF200;
 }
 
 nav#sidebar li li.active > a {

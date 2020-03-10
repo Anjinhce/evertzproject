@@ -1203,7 +1203,7 @@ app.post('/emp_find',urlencodedParser, function(req, res) {
     page_no=page_no+1;
     new_limit=(page_no*10);
    
-   find_query = "SELECT employee.EMP_ID,employee.PHOTO_PATH,employee.FIRTS_NAME,employee.MIDDLE_NAME,employee.LAST_NAME,designation.DESIGNATION,employee.DATE_OF_JOIN,employee.DATE_OF_BIRTH,employee.P_EMAIL,employee.P_PHONE,employee.W_EMAIL,employee.W_PHONE from employee,gender,designation WHERE employee.GENDER_ID=gender.ID and designation.ID=employee.DESIGNATION_ID  and EMP_ID = '"+emp_id+"'";
+   find_query = "SELECT employee.ID ,employee.EMP_ID,employee.PHOTO_PATH,employee.FIRTS_NAME,employee.MIDDLE_NAME,employee.LAST_NAME,designation.DESIGNATION,employee.DATE_OF_JOIN,employee.DATE_OF_BIRTH,employee.P_EMAIL,employee.P_PHONE,employee.W_EMAIL,employee.W_PHONE from employee,gender,designation WHERE employee.GENDER_ID=gender.ID and designation.ID=employee.DESIGNATION_ID  and EMP_ID = '"+emp_id+"'";
     mysqlConnection.query(find_query,function(err,result){
         
         if(err) throw err
@@ -1225,6 +1225,29 @@ app.post('/emp_find',urlencodedParser, function(req, res) {
 });
 
 
+app.get('/delete_emp/:id',function(req,res){
+
+var delete_id = req.params.id;
+
+console.log(delete_id);
+
+
+
+mysqlConnection.query("delete from employee where id="+delete_id+"",function(err){
+if (err) throw err
+else{
+
+
+
+res.redirect('/');
+
+
+
+}
+
+
+})
+})
 
 
 
