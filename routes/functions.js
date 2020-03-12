@@ -39,9 +39,7 @@ module.exports = {
         })
     },
     addUser: (req, res) => {
-        if (!req.files) {
-            return res.status(400).send("No files were uploaded.");
-        }
+       
 
         let message = '';
         let emp_id = req.body.employee_id;
