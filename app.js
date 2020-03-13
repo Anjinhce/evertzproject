@@ -130,7 +130,24 @@ app.get('/', getHomePage);
 app.get('/secret/add', addUserPage);
 app.get('/edit/:id', editPlayerPage);
 app.get('/delete/:id', deletePlayer);
-app.post('/secret/add-user',urlencodedParser, addUser);
+
+//employee photo upload
+
+var storage_photo = multer.diskStorage({
+
+    destination : function(req,file,cb){
+        cb(null,'photo/');
+    },
+    filename : function(req,file,cb){
+        cb(null,Date.now()+file.originalname)
+    }
+})
+
+var upload_photo = multer({storage : storage})
+
+
+
+app.post('/secret/add-user',upload_photo.single('photo') ,addUser);
 app.post('/edit/:id',urlencodedParser, editPlayer);
 app.get('/view/:id', viewEmployeePage);
 app.post('/view/:id',urlencodedParser, viewEmployee);
@@ -154,7 +171,24 @@ app.get('/secret/edit-bank/:id',edit_bank)
 app.post('/secret/update_bank_details/:id',urlencodedParser,updateBank)
 
 app.get('/secret/add-experience/:id',addExperience)
-app.post('/secret/add_experience_details',urlencodedParser, add_experience_details)
+
+//file upload expreence
+
+var storage_exp = multer.diskStorage({
+
+    destination : function(req,file,cb){
+        cb(null,'exp_cert/');
+    },
+    filename : function(req,file,cb){
+        cb(null,Date.now()+file.originalname)
+    }
+})
+
+var upload_exp = multer({storage : storage_exp})
+
+
+
+app.post('/secret/add_experience_details',upload_exp.single('photo0'), add_experience_details)
 app.get('/secret/edit-experience-details/:id/:emp_id', edit_experience_details)
 app.get('/secret/edit-experience/:id/:emp_id',edit_experience)
 app.post('/secret/update_experience/:id/:emp_id',urlencodedParser,updateExperience)

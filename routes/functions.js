@@ -40,8 +40,6 @@ module.exports = {
     },
     addUser: (req, res) => {
        
-
-        let message = '';
         let emp_id = req.body.employee_id;
         let first_name = req.body.first_name;
         let middle_name = req.body.middle_name;
@@ -56,51 +54,33 @@ module.exports = {
         let personal_phone=req.body.p_phone;
         let work_phone=req.body.w_phone;
         let country=req.body.country
-        let uploadedFile = req.files.photo;
-        let image_name = uploadedFile.name;
-        let fileExtension = uploadedFile.mimetype.split('/')[1];
-        image_name = first_name +'_'+emp_id+'.'+ fileExtension;
+        let photo = req.file.filename;
 
-        let empQuery = "SELECT * FROM employee WHERE EMP_ID = '" + emp_id + "'";
+        
+      mysqlConnection.query("select ID from employee where EMP_ID = '"+reporting_to+"' ",function(err,R_ID){
+      if(err)throw err
 
-        mysqlConnection.query(empQuery, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            if (result.length > 0) {
-                message = 'Employee already exists';
-                res.render('add-player.ejs', {
-                    message,
-                    title: "Evertz | Add"
-                });
-            } else {
-                // check the filetype before uploading it
-                if (uploadedFile.mimetype === 'image/png' || uploadedFile.mimetype === 'image/jpeg' || uploadedFile.mimetype === 'image/gif') {
-                    // upload the file to the /public/assets/img directory
-                    uploadedFile.mv(`public/assets/img/${image_name}`, (err) => {
-                        if (err) {
-                            return res.status(500).send(err);
-                        }
-                        // send the player's details to the database
-                        console.log(dateofbirth+" "+dateofjoining);
-                        let query = "INSERT INTO employee (ID, EMP_ID, FIRTS_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, DATE_OF_JOIN, DESIGNATION_ID, GENDER_ID, REPORTING_TO_ID, P_EMAIL, W_EMAIL, P_PHONE, W_PHONE, PHOTO_PATH, COUNTRY_ID) VALUES ('','" +
-                            emp_id + "', '" + first_name + "', '" + middle_name + "', '" + last_name + "', '" + dateofbirth + "', '" + dateofjoining + "','" + designation + "','" + gender + "','"+reporting_to+"','"+personal_email+"','"+work_email+"','"+personal_phone+"','"+work_phone+"','"+image_name+"','"+country+"')";
-                        mysqlConnection.query(query, (err, result) => {
-                            if (err) {
-                                return res.status(500).send(err);
-                            }
-                                res.redirect('../secret/add-education/'+emp_id);
-                        });
-                    });
-                } else {
-                    message = "Invalid File format. Only 'gif', 'jpeg' and 'png' images are allowed.";
-                    res.render('add-player.ejs', {
-                        message,
-                        title: "Evertz | Add"
-                    });
-                }
-            }
+      let sql1 = "INSERT INTO employee (EMP_ID, FIRTS_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, DATE_OF_JOIN, DESIGNATION_ID, GENDER_ID, REPORTING_TO_ID, P_EMAIL, W_EMAIL, P_PHONE, W_PHONE, PHOTO_PATH, COUNTRY_ID) VALUES ('" +
+        emp_id + "', '" + first_name + "', '" + middle_name + "', '" + last_name + "', '" + dateofbirth + "', '" + dateofjoining + "','" + designation + "','" + gender + "','"+R_ID[0].ID+"','"+personal_email+"','"+work_email+"','"+personal_phone+"','"+work_phone+"','"+photo+"','"+country+"')";
+        
+        mysqlConnection.query(sql1,function(err,result){
+
+if(err) throw err
+else{
+
+    console.log(R_ID);
+    console.log(result);
+    res.redirect('../secret/add-education/'+emp_id);
+
+
+}
+
         });
+    })
+        
+
+
+
     },
     edit_personal_details: (req,res) => {
         let emp_id=req.params.id
@@ -300,7 +280,12 @@ module.exports = {
         res.render('../secret/add-bank',{user_id: emp_id});
     },
     add_bank_details: (req,res) => {
-        let emp_id=req.body.emp_id
+
+        
+        let emp_id=req.body.emp_id;
+
+        console.log(emp_id);
+        console.log(req.body);
         let count_experience=req.body.count_experience;
         mysqlConnection.query("select ID from employee where EMP_ID='"+emp_id+"'",function(err,result)
         {
@@ -391,67 +376,29 @@ module.exports = {
                 for(var i=0;i<=count_experience;i++)
                 {
 
-                    if (!req.files) {
-                        return res.status(400).send("No files were uploaded.");
-                    }
-                    else
-                    {
+                   
+                   
                         let store_id=result[0].ID
                         let company_name=req.body['company_name'+i]
                         let designation=req.body['designation'+i]
                         let from_date=req.body['from'+i]
                         let to_date=req.body['to'+i]
-                        let uploadedFile = req.files['photo'+i];
-                        let image_name = uploadedFile.name;
-                        let fileExtension = uploadedFile.mimetype.split('/')[1];
-                        image_name = emp_id+'_'+company_name+'.'+ fileExtension;
-                        if (uploadedFile.mimetype === 'image/png' || uploadedFile.mimetype === 'image/jpeg' || uploadedFile.mimetype === 'image/gif')
-                        {
-                            uploadedFile.mv(`public/assets/experience-cert/${image_name}`,function(err)
-                            {
-                                if(err)
-                                {
-                                    throw err
-                                }
-                                else
-                                {
-                                    mysqlConnection.query("insert into experience (ID, EMP_ID, COMPANY_NAME, DESIGNATION, FROM_DATE, TO_DATE, EXP_CERTIFICATE_PATH) values ('','"+store_id+"','"+company_name+"','"+designation+"','"+from_date+"','"+to_date+"','"+image_name+"')",function(err,result1)
-                                    {
-                                        if(err)
-                                        {
-                                            throw err
-                                        }
-                                        else
-                                        {
-                                            j++
-                                            if((j-1)==count_experience)
-                                            {
-                                                let username = "evertz_"+emp_id
-                                                let password = Math.random().toString(36).substring(7);
-                                                let date_of_creation=new Date();
-                                                let last_login=new Date();
-                                                console.log(username)
-                                                mysqlConnection.query("insert into user (ID, EMP_ID, USERNAME, PASSWORD, DATE_OF_CREATION, LAST_LOGIN, IS_ACTIVE) values ('','"+store_id+"','"+username+"','"+password+"','"+date_of_creation+"','"+last_login+"','1')",function(err)
-                                                {
-                                                    if(err)
-                                                    {
-                                                        throw err
-                                                    }
-                                                    else
-                                                    {
-                                                        res.redirect('../secret/create-user/'+emp_id);
-                                                    }
-                                                })
-                                            }
-                                        }
-                                    })
-                                }
-                            })
-                        }
-                    }
+                        let uploadedFile = req.file.filename+i;
+                    
+                        mysqlConnection.query("insert into experience (EMP_ID, COMPANY_NAME, DESIGNATION, FROM_DATE, TO_DATE, EXP_CERTIFICATE_PATH) values ('"+store_id+"','"+company_name+"','"+designation+"','"+from_date+"','"+to_date+"','"+uploadedFile+"')",function(err,result1){
+
+                            if(err) throw err
+                            else{
+
+
+                                res.redirect('../secret/create-user/'+emp_id);
+                            }
+                        })
                 }
             }
-        })
+        });
+                         
+        
     },
     edit_experience_details:(req,res) => {
         let exp_id=req.params.id
@@ -511,6 +458,15 @@ module.exports = {
     },
     createUser: (req,res) => {
         let emp_id=req.params.id
+
+         var username=evertz+emp_id;
+         var password=emp_id;
+
+         mysqlConnection.query("insert into user(EMP_ID,PASSWORD) values('"+username+"','"+password+"') ",function(err,result){
+if(err) throw errr
+        
+
+
         mysqlConnection.query("select employee.ID,employee.EMP_ID, employee.FIRTS_NAME, employee.MIDDLE_NAME, employee.LAST_NAME, employee.DATE_OF_BIRTH, employee.DATE_OF_JOIN, employee.DESIGNATION_ID, employee.GENDER_ID, employee.REPORTING_TO_ID, employee.P_EMAIL, employee.W_EMAIL, employee.P_PHONE, employee.W_PHONE, employee.PHOTO_PATH, employee.COUNTRY_ID, designation.DESIGNATION, gender.GENDER, country.NAME as country_name  from employee, designation, gender, country where employee.EMP_ID='"+emp_id+"' and designation.ID=employee.DESIGNATION_ID and gender.ID=employee.GENDER_ID and country.ID=employee.COUNTRY_ID",function(err,result)
         {
             if(err)
@@ -559,6 +515,7 @@ module.exports = {
                                             })
                                         }
                                         })
+                                    
                             }
                         })
                     }
