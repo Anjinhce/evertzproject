@@ -40,14 +40,24 @@ module.exports = {
     },
     addUser: (req, res) => {
        
+                         
+        function convert(str) {
+            var date = new Date(str),
+              mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+              day = ("0" + date.getDate()).slice(-2);
+            return [ date.getFullYear(),mnth,day ].join("-");
+            
+          }
+
+
         let emp_id = req.body.employee_id;
         let first_name = req.body.first_name;
         let middle_name = req.body.middle_name;
         let last_name = req.body.last_name;
         let designation = req.body.designation;
         let gender = req.body.gender;
-        let dateofbirth = req.body.dob;
-        let dateofjoining = req.body.doj;
+        let dateofbirth =convert(req.body.dob)
+        let dateofjoining = convert(req.body.doj);
         let reporting_to = req.body.reporting_to;
         let personal_email=req.body.p_email;
         let work_email=req.body.w_email;
@@ -55,6 +65,8 @@ module.exports = {
         let work_phone=req.body.w_phone;
         let country=req.body.country
         let photo = req.file.filename;
+
+      console.log(dateofbirth);
 
         
       mysqlConnection.query("select ID from employee where EMP_ID = '"+reporting_to+"' ",function(err,R_ID){
@@ -376,8 +388,7 @@ else{
                 for(var i=0;i<=count_experience;i++)
                 {
 
-                   
-                   
+                    console.log(req.body);
                         let store_id=result[0].ID
                         let company_name=req.body['company_name'+i]
                         let designation=req.body['designation'+i]
@@ -459,11 +470,18 @@ else{
     createUser: (req,res) => {
         let emp_id=req.params.id
 
-         var username=evertz+emp_id;
+         var username="evertz"+emp_id;
          var password=emp_id;
 
-         mysqlConnection.query("insert into user(EMP_ID,PASSWORD) values('"+username+"','"+password+"') ",function(err,result){
-if(err) throw errr
+         var creationDate = Date.now();
+         console.log(creationDate);
+
+         mysqlConnection.query("select ID from employee where EMP_ID='"+emp_id+"'",function(err,ID){
+
+         
+
+         mysqlConnection.query("insert into user(EMP_ID,USERNAME,PASSWORD) values('"+ID[0].ID+"','"+username+"','"+password+"') ",function(err,result){
+if(err) throw err
         
 
 
@@ -522,8 +540,10 @@ if(err) throw errr
                 })
             }
         })
+    })
+})
     },
-    editPlayerPage: (req, res) => {
+    editPlayerPage : (req, res) => {
         let playerId = req.params.id;
         let query = "SELECT * FROM `employee` WHERE id = '" + playerId + "' ";
         mysqlConnection.query(query, (err, result) => {

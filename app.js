@@ -136,14 +136,14 @@ app.get('/delete/:id', deletePlayer);
 var storage_photo = multer.diskStorage({
 
     destination : function(req,file,cb){
-        cb(null,'photo/');
+        cb(null,'public/assets/img/');
     },
     filename : function(req,file,cb){
         cb(null,Date.now()+file.originalname)
     }
 })
 
-var upload_photo = multer({storage : storage})
+var upload_photo = multer({storage : storage_photo})
 
 
 
