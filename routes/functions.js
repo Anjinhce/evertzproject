@@ -66,7 +66,7 @@ module.exports = {
         let country=req.body.country
         let photo = req.file.filename;
 
-      console.log(dateofbirth);
+      
 
         
       mysqlConnection.query("select ID from employee where EMP_ID = '"+reporting_to+"' ",function(err,R_ID){
@@ -158,8 +158,20 @@ else{
         let personal_phone=req.body.p_phone;
         let work_phone=req.body.w_phone;
         let country=req.body.country
-        let photo = req.file.filename;
+        let photo;
+if(typeof(req.body.filename)=='undefined'){
 
+        photo=req.body.updatephoto;
+        
+}
+else{
+
+    photo=req.file.filename;
+}
+
+
+
+        console.log(req.body);
  
       let sql1 = "update employee set FIRTS_NAME='"+first_name+"', MIDDLE_NAME='"+middle_name+"', LAST_NAME='"+last_name+"', DATE_OF_BIRTH='"+dateofbirth+"', DATE_OF_JOIN='"+dateofjoining+"', DESIGNATION_ID='"+designation+"', GENDER_ID='"+gender+"', REPORTING_TO_ID='"+reporting_to+"', P_EMAIL='"+personal_email+"', W_EMAIL='"+work_email+"', P_PHONE='"+personal_phone+"', W_PHONE='"+work_phone+"', PHOTO_PATH='"+photo+"', COUNTRY_ID='"+country+"' where ID='"+store_id+"'";
         
@@ -539,6 +551,10 @@ if(err) throw err
                                                 {
                                                     throw err
                                                 }
+
+                                             mysqlConnection.query("select FIRTS_NAME,MIDDDLE_NAME,LAST_NAME from employee",function(err,result){
+                                                 
+                                             })   
                                                 else
                                                 {
                                                     var obj={print:result, print1: result1, print2: result2, print3: result3, print4: result4}
