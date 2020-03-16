@@ -106,66 +106,79 @@ else{
             {
                 throw err
             }
-            else
-            {
-                mysqlConnection.query("select * from designation;select * from gender; select * from country",function(err1,result1)
+            mysqlConnection.query("select * from designation;select * from gender; select * from country",function(err1,result1)
                 {
                     if(err1)
                     {
                         throw err1
                     }
+
+                mysqlConnection.query("select EMP_ID from employee where '"+result[0]. REPORTING_TO_ID+"'",function(err2,R_ID)
+                {  
+                    if (err2) throw err
+ 
+                
+                     
                     else
                     {
-                        console.log(result1);
-                        res.render('../secret/edit-user',{my_id: emp_id,print : result,print1 : result1[0], print2 : result1[1], print3 : result1[2]});
+                        console.log(result);
+                        console.log(result1)
+                        console.log("Reporting to ID")
+                        console.log(R_ID);
+                        res.render('../secret/edit-user',{my_id: emp_id,print : result,print1 : result1[0], print2 : result1[1], print3 : result1[2],RID: R_ID[0]});
                     }
                 })
-            }
+            
+            })
         })
+
+
     },
     updateUser:(req,res) => {
+        function convert(str) {
+            var date = new Date(str),
+              mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+              day = ("0" + date.getDate()).slice(-2);
+            return [ date.getFullYear(),mnth,day ].join("-");
+            
+          }
+
         let store_id=req.params.id
-        let emp_id=req.body.employee_id
-        let first_name=req.body.first_name
-        let middle_name=req.body.middle_name
-        let last_name=req.body.last_name
-        let dob=req.body.dob
-        let doj=req.body.doj
-        let designation=req.body.designation
-        let gender=req.body.gender
-        let reporting_to=req.body.reporting_to
-        let p_email=req.body.p_email
-        let w_email=req.body.w_email
-        let p_phone=req.body.p_phone
-        let w_phone=req.body.w_phone
+        let emp_id = req.body.employee_id;
+        let first_name = req.body.first_name;
+        let middle_name = req.body.middle_name;
+        let last_name = req.body.last_name;
+        let designation = req.body.designation;
+        let gender = req.body.gender;
+        let dateofbirth =convert(req.body.dob)
+        let dateofjoining = convert(req.body.doj);
+        let reporting_to = req.body.reporting_to;
+        let personal_email=req.body.p_email;
+        let work_email=req.body.w_email;
+        let personal_phone=req.body.p_phone;
+        let work_phone=req.body.w_phone;
         let country=req.body.country
-        let uploadedFile = req.files.photo;
-        let image_name = uploadedFile.name;
-        let fileExtension = uploadedFile.mimetype.split('/')[1];
-        image_name = first_name +'_'+emp_id+'_updated'+'.'+ fileExtension;
-        if (uploadedFile.mimetype === 'image/png' || uploadedFile.mimetype === 'image/jpeg' || uploadedFile.mimetype === 'image/gif') {
-            // upload the file to the /public/assets/img directory
-            uploadedFile.mv(`public/assets/img/${image_name}`, (err) => {
-                if (err) {
-                    return res.status(500).send(err);
-                }
-                // send the player's details to the database
-                let query = "update employee set EMP_ID='"+emp_id+"', FIRTS_NAME='"+first_name+"', MIDDLE_NAME='"+middle_name+"', LAST_NAME='"+last_name+"', DATE_OF_BIRTH='"+dob+"', DATE_OF_JOIN='"+doj+"', DESIGNATION_ID='"+designation+"', GENDER_ID='"+gender+"', REPORTING_TO_ID='"+reporting_to+"', P_EMAIL='"+p_email+"', W_EMAIL='"+w_email+"', P_PHONE='"+p_phone+"', W_PHONE='"+w_phone+"', PHOTO_PATH='"+image_name+"', COUNTRY_ID='"+country+"' where ID='"+store_id+"'";
-                mysqlConnection.query(query, (err, result) => {
-                    if (err) {
-                        return res.status(500).send(err);
-                    }
-                        res.redirect('../../secret/create-user/'+emp_id);
-                });
-            });
-        } else {
-            message = "Invalid File format. Only 'gif', 'jpeg' and 'png' images are allowed.";
-            res.render('add-player.ejs', {
-                message,
-                title: "Evertz | Add"
-            });
-        }
-    },
+        let photo = req.file.filename;
+
+ 
+      let sql1 = "update employee set FIRTS_NAME='"+first_name+"', MIDDLE_NAME='"+middle_name+"', LAST_NAME='"+last_name+"', DATE_OF_BIRTH='"+dateofbirth+"', DATE_OF_JOIN='"+dateofjoining+"', DESIGNATION_ID='"+designation+"', GENDER_ID='"+gender+"', REPORTING_TO_ID='"+reporting_to+"', P_EMAIL='"+personal_email+"', W_EMAIL='"+work_email+"', P_PHONE='"+personal_phone+"', W_PHONE='"+work_phone+"', PHOTO_PATH='"+photo+"', COUNTRY_ID='"+country+"' where ID='"+store_id+"'";
+        
+        mysqlConnection.query(sql1,function(err,result){
+
+if(err) throw err
+else{
+
+    
+
+   
+    res.redirect('../../secret/create-user/'+emp_id);
+
+
+}
+
+        });
+    
+},
     addEducation: (req,res) => {
         let emp_id=req.params.id;
         var print,print1,print2;
@@ -493,6 +506,7 @@ if(err) throw err
             }
             else
             {
+                
                 let store_id=result[0].ID
                 mysqlConnection.query("select USERNAME,PASSWORD from user where EMP_ID='"+store_id+"'",function(err,result1)
                 {
@@ -632,34 +646,7 @@ if(err) throw err
         let branch_name = req.body.branch_name;
         let swift_code = req.body.swift_code;
 
-        // let uploadedFile = req.files.image;
-        // let image_name = uploadedFile.name;
-        // let fileExtension = uploadedFile.mimetype.split('/')[1];
-        // image_name = username + '.' + fileExtension;
-
-
-        // check the filetype before uploading it
-        // if (uploadedFile.mimetype === 'image/png' || uploadedFile.mimetype === 'image/jpeg' || uploadedFile.mimetype === 'image/gif') {
-        // upload the file to the /public/assets/img directory
-        // uploadedFile.mv(`public/assets/img/${image_name}`, (err) => {
-        //     if (err) {
-        //         return res.status(500).send(err);
-        //     }
-        //     let query = "UPDATE `players` SET `first_name` = '" + first_name + "', `last_name` = '" + last_name + "',`image` = '" + image_name + "', `position` = '" + position + "', `number` = '" + number + "', `date_of_birth` = '" + dateofbirth + "', `date_of_joining` = '" + dateofjoining + "' WHERE `players`.`id` = '" + playerId + "'";
-        //     mysqlConnection.query(query, (err, result) => {
-        //         if (err) {
-        //             return res.status(500).send(err);
-        //         }
-        //         res.redirect('/view/' + playerId);
-        //     });
-        // });
-        // } else {
-        //     message = "Invalid File format. Only 'gif', 'jpeg' and 'png' images are allowed.";
-        //     res.render('add-player.ejs', {
-        //         message,
-        //         title: "Evertz | View"
-        //     });
-        // }
+       
         let query = "UPDATE `players` SET  `position` = '" + position + "', `ACC_HOLD_NAME` = '" + account_holder_name + "', `ACC_NO` = '" + account_number + "', `IFSC_CODE` = '" + ifsc_code + "', `BANK_NAME` = '" + bank_name + "', `BRANCH_NAME` = '" + branch_name + "', `SWIFT_CODE` = '" + swift_code + "', `number` = '" + number + "', `W_EMAIL` = '" + working_email + "', `P_EMAIL` = '" + personal_email + "', `COUNTRY_ID` = '" + country + "', `date_of_birth` = '" + dateofbirth + "', `date_of_joining` = '" + dateofjoining + "' WHERE `players`.`id` = '" + playerId + "'";
         mysqlConnection.query(query, (err, result) => {
             if (err) {

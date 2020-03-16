@@ -195,7 +195,7 @@ app.post('/secret/update_experience/:id/:emp_id',urlencodedParser,updateExperien
 
 app.get('/secret/edit-personal-details/:id',edit_personal_details)
 app.get('/secret/edit-user/:id',edit_personal_details_page)
-app.post('/secret/update-user-details/:id',urlencodedParser,updateUser)
+app.post('/secret/update-user-details/:id',upload_photo.single('photo'),updateUser)
 
 app.get('/secret/create-user/:id', createUser)
 app.post('/loginAction',urlencodedParser,loginAction)
