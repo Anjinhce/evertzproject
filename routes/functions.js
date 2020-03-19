@@ -516,35 +516,27 @@ if(err) throw err
             {
                 throw err
             }
-            else
-            {
-                
-                let store_id=result[0].ID
+             let store_id=result[0].ID
                 mysqlConnection.query("select USERNAME,PASSWORD from user where EMP_ID='"+store_id+"'",function(err,result1)
                 {
                     if(err)
                     {
                         throw err
                     }
-                    else
-                    {
+                    
                         mysqlConnection.query("select education_details.ID,education_details.PERCENTAGE, education_details.TYPE_ID, education_details.GRADE_ID, education_details.BRANCH_ID, edu_type.NAME as edu_type_name, edu_branch.NAME as edu_branch_name, grades.NAME as edu_grade_name from education_details,edu_branch,edu_type,grades where EMP_ID='"+store_id+"' and edu_type.ID=education_details.TYPE_ID and edu_branch.ID=education_details.BRANCH_ID and grades.ID=education_details.GRADE_ID",function(err,result2)
                         {
                             if(err)
                             {
                                 throw err
                             }
-                            else
-                            {
-                                
-                                mysqlConnection.query("select * from employee_bank where EMP_ID='"+store_id+"'",function(err,result3)
+                           mysqlConnection.query("select * from employee_bank where EMP_ID='"+store_id+"'",function(err,result3)
                                         {
                                             if(err)
                                         {
                                             throw err
                                         }
-                                        else
-                                        {
+                                        
                                             mysqlConnection.query("select * from experience where EMP_ID='"+store_id+"'",function(err,result4)
                                             {
                                                 if(err)
@@ -553,25 +545,28 @@ if(err) throw err
                                                 }
 
                                              mysqlConnection.query("select FIRTS_NAME,MIDDDLE_NAME,LAST_NAME from employee",function(err,result){
-                                                 
-                                             })   
+                                                 if(err) throw err
+                                             
                                                 else
                                                 {
                                                     var obj={print:result, print1: result1, print2: result2, print3: result3, print4: result4}
                                                 res.render("../secret/create-user",obj)
                                                 }
                                             })
-                                        }
                                         })
+                                        
+                                    })
                                     
-                            }
+                            
                         })
-                    }
+                    
                 })
-            }
+            })
         })
     })
-})
+        
+    
+
     },
     editPlayerPage : (req, res) => {
         let playerId = req.params.id;
