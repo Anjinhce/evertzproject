@@ -38,6 +38,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 app.use(session({secret: 'qweasdzxc',saveUninitialized:true, resave: false}))
 app.use(cookieParser());
+
 app.use('/blogs',blogRouter);
 app.use('/training',appRoter);
 
