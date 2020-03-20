@@ -171,16 +171,21 @@ else{
 
 
 
-        console.log(req.body);
+       mysqlConnection.query("select ID from employee where EMP_ID='"+reporting_to+"'",function(err2,ID){ 
+
+        if(err2) throw err
  
-      let sql1 = "update employee set FIRTS_NAME='"+first_name+"', MIDDLE_NAME='"+middle_name+"', LAST_NAME='"+last_name+"', DATE_OF_BIRTH='"+dateofbirth+"', DATE_OF_JOIN='"+dateofjoining+"', DESIGNATION_ID='"+designation+"', GENDER_ID='"+gender+"', REPORTING_TO_ID='"+reporting_to+"', P_EMAIL='"+personal_email+"', W_EMAIL='"+work_email+"', P_PHONE='"+personal_phone+"', W_PHONE='"+work_phone+"', PHOTO_PATH='"+photo+"', COUNTRY_ID='"+country+"' where ID='"+store_id+"'";
+      let sql1 = "update employee set FIRTS_NAME='"+first_name+"', MIDDLE_NAME='"+middle_name+"', LAST_NAME='"+last_name+"', DATE_OF_BIRTH='"+dateofbirth+"', DATE_OF_JOIN='"+dateofjoining+"', DESIGNATION_ID='"+designation+"', GENDER_ID='"+gender+"', REPORTING_TO_ID='"+ID[0].ID+"', P_EMAIL='"+personal_email+"', W_EMAIL='"+work_email+"', P_PHONE='"+personal_phone+"', W_PHONE='"+work_phone+"', PHOTO_PATH='"+photo+"', COUNTRY_ID='"+country+"' where EMP_ID='"+store_id+"'";
+     
+
+      console.log(store_id)
         
         mysqlConnection.query(sql1,function(err,result){
 
 if(err) throw err
 else{
 
-    
+   
 
    
     res.redirect('../../secret/create-user/'+emp_id);
@@ -189,6 +194,7 @@ else{
 }
 
         });
+    });
     
 },
     addEducation: (req,res) => {
@@ -288,6 +294,7 @@ else{
                     }
                     else
                     {
+                        console.log(result);
                         res.render('../secret/edit-education',{print: result, print1: result1[0], print2: result1[1], print3: result1[2], user_id: emp_id})
                     }
                 })
@@ -301,6 +308,8 @@ else{
         let edu_branch=req.body.education_branch;
         let edu_grade=req.body.education_grade;
         let emp_id=req.body.emp_id;
+
+        console.log(req.body)
         mysqlConnection.query("update education_details set PERCENTAGE='"+percentage+"', TYPE_ID='"+edu_type+"', GRADE_ID='"+edu_grade+"', BRANCH_ID='"+edu_branch+"' where ID='"+edu_id+"'",function(err){
             if(err)
             {
@@ -494,63 +503,69 @@ else{
     },
     createUser: (req,res) => {
         let emp_id=req.params.id
+        mysqlConnection.query("select employee.ID,employee.EMP_ID, employee.FIRTS_NAME, employee.MIDDLE_NAME, employee.LAST_NAME, employee.DATE_OF_BIRTH, employee.DATE_OF_JOIN, employee.DESIGNATION_ID, employee.GENDER_ID, employee.REPORTING_TO_ID, employee.P_EMAIL, employee.W_EMAIL, employee.P_PHONE, employee.W_PHONE, employee.PHOTO_PATH, employee.COUNTRY_ID, designation.DESIGNATION, gender.GENDER, country.NAME as country_name  from employee, designation, gender, country where employee.EMP_ID='"+emp_id+"' and designation.ID=employee.DESIGNATION_ID and gender.ID=employee.GENDER_ID and country.ID=employee.COUNTRY_ID ",function(err,result)
+        {
+            if(err)
+            {
+                throw err
+            }
 
-         var username="evertz"+emp_id;
-         var password=emp_id;
-
-         var creationDate = Date.now();
-         console.log(creationDate);
-
-         mysqlConnection.query("select ID from employee where EMP_ID='"+emp_id+"'",function(err,ID){
-            if(err) throw err
-         
-
-         mysqlConnection.query("insert into user(EMP_ID,USERNAME,PASSWORD) values('"+ID[0].ID+"','"+username+"','"+password+"') ",function(err1){
-             if(err1) throw err1
-        
-        mysqlConnection.query("select employee.ID,employee.EMP_ID, employee.FIRTS_NAME, employee.MIDDLE_NAME, employee.LAST_NAME, employee.DATE_OF_BIRTH, employee.DATE_OF_JOIN, employee.DESIGNATION_ID, employee.GENDER_ID, employee.REPORTING_TO_ID, employee.P_EMAIL, employee.W_EMAIL, employee.P_PHONE, employee.W_PHONE, employee.PHOTO_PATH, employee.COUNTRY_ID, designation.DESIGNATION, gender.GENDER, country.NAME as country_name  from employee, designation, gender, country where employee.EMP_ID='"+emp_id+"' and designation.ID=employee.DESIGNATION_ID and gender.ID=employee.GENDER_ID and country.ID=employee.COUNTRY_ID",function(err2,result){
-        
-            if(err2) throw err2
-        
-            console.log(result);
-             let store_id=result[0].ID
-                mysqlConnection.query("select USERNAME,PASSWORD from user where EMP_ID='"+store_id+"'",function(err3,result1){
-                
-                   if(err3) throw err3
+            else
+            {
+            
+               let store_id=result[0].ID
+               console.log(result)
+                mysqlConnection.query("select USERNAME,PASSWORD from user where EMP_ID='"+store_id+"'",function(err,result1)
+                {
+                    if(err)
+                    {
+                        throw err
+                    }
                     
-                        mysqlConnection.query("select education_details.ID,education_details.PERCENTAGE, education_details.TYPE_ID, education_details.GRADE_ID, education_details.BRANCH_ID, edu_type.NAME as edu_type_name, edu_branch.NAME as edu_branch_name, grades.NAME as edu_grade_name from education_details,edu_branch,edu_type,grades where EMP_ID='"+store_id+"' and edu_type.ID=education_details.TYPE_ID and edu_branch.ID=education_details.BRANCH_ID and grades.ID=education_details.GRADE_ID",function(err4,result2){
-                        if (err4) throw err4
-                           mysqlConnection.query("select * from employee_bank where EMP_ID='"+store_id+"'",function(err5,result3){
+                        mysqlConnection.query("select education_details.ID,education_details.PERCENTAGE, education_details.TYPE_ID, education_details.GRADE_ID, education_details.BRANCH_ID, edu_type.NAME as edu_type_name, edu_branch.NAME as edu_branch_name, grades.NAME as edu_grade_name from education_details,edu_branch,edu_type,grades where EMP_ID='"+store_id+"' and edu_type.ID=education_details.TYPE_ID and edu_branch.ID=education_details.BRANCH_ID and grades.ID=education_details.GRADE_ID",function(err,result2)
+                        {
+                            if(err)
+                            {
+                                throw err
+                            }
+                            
+                                
+                                mysqlConnection.query("select * from employee_bank where EMP_ID='"+store_id+"'",function(err,result3)
+                                        {
+                                            if(err)
+                                        {
+                                            throw err
+                                        }
                                         
-                                  if (err5) throw err5     
-                         mysqlConnection.query("select * from experience where EMP_ID='"+store_id+"'",function(err6,result4){
-                                            
-                            if(err6) throw err6
+                                            mysqlConnection.query("select * from experience where EMP_ID='"+store_id+"'",function(err,result4)
+                                            {
+                                                if(err)
+                                                {
+                                                    throw err
+                                                }
+                                                mysqlConnection.query("select e.FIRTS_NAME as Employee, m.REPORTING_TO_ID as reports_to, m.FIRTS_NAME,m.MIDDLE_NAME,m.LAST_NAME from employee e inner join employee m on e.REPORTING_TO_ID = m.ID and e.EMP_ID='"+result[0].EMP_ID+"'",function(err10,R_NAME)
+                                                {
+                                                    if(err10) {
+                                                    
+                                                    throw err10
+                                                    }
                                                 
-                  mysqlConnection.query("select FIRTS_NAME,MIDDLE_NAME,LAST_NAME from employee",function(err7,result){
-                                                 if(err7) throw err7
-                                             
                                                 else
                                                 {
-                                                    var obj={print:result, print1: result1, print2: result2, print3: result3, print4: result4}
+                                                    var obj={print:result, print1: result1, print2: result2, print3: result3, print4: result4,R_NAME : R_NAME}
                                                 res.render("../secret/create-user",obj)
                                                 }
                                             })
                                         })
-                                        
-                                    })
                                     
-                            
+                                    })
+                              })
+          
+                            })
+                        }
                         })
-                    
-                })
-            })
-        })
-    })
-        
     
-
-    },
+                        },
     editPlayerPage : (req, res) => {
         let playerId = req.params.id;
         let query = "SELECT * FROM `employee` WHERE id = '" + playerId + "' ";
