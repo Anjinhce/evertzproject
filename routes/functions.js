@@ -169,6 +169,9 @@ else{
     photo=req.file.filename;
 }
 
+console.log("body data")
+console.log(req.body)
+
 
 
        mysqlConnection.query("select ID from employee where EMP_ID='"+reporting_to+"'",function(err2,ID){ 
@@ -178,7 +181,7 @@ else{
       let sql1 = "update employee set FIRTS_NAME='"+first_name+"', MIDDLE_NAME='"+middle_name+"', LAST_NAME='"+last_name+"', DATE_OF_BIRTH='"+dateofbirth+"', DATE_OF_JOIN='"+dateofjoining+"', DESIGNATION_ID='"+designation+"', GENDER_ID='"+gender+"', REPORTING_TO_ID='"+ID[0].ID+"', P_EMAIL='"+personal_email+"', W_EMAIL='"+work_email+"', P_PHONE='"+personal_phone+"', W_PHONE='"+work_phone+"', PHOTO_PATH='"+photo+"', COUNTRY_ID='"+country+"' where EMP_ID='"+store_id+"'";
      
 
-      console.log(store_id)
+      
         
         mysqlConnection.query(sql1,function(err,result){
 
@@ -514,7 +517,7 @@ else{
             {
             
                let store_id=result[0].ID
-               console.log(result)
+               
                 mysqlConnection.query("select USERNAME,PASSWORD from user where EMP_ID='"+store_id+"'",function(err,result1)
                 {
                     if(err)
