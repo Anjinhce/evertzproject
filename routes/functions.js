@@ -143,6 +143,7 @@ else{
             
           }
 
+          console.log(req.body)
         let store_id=req.params.id
         let emp_id = req.body.employee_id;
         let first_name = req.body.first_name;
@@ -189,7 +190,7 @@ if(err) throw err
 else{
 
    
-
+  
    
     res.redirect('../../secret/create-user/'+emp_id);
 
