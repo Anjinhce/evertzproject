@@ -143,7 +143,7 @@ else{
             
           }
 
-          console.log(req.body)
+         
         let store_id=req.params.id
         let emp_id = req.body.employee_id;
         let first_name = req.body.first_name;
@@ -159,19 +159,36 @@ else{
         let personal_phone=req.body.p_phone;
         let work_phone=req.body.w_phone;
         let country=req.body.country
-        let photo;
-if(typeof(req.body.filename)=='undefined'){
-
-        photo=req.body.updatephoto;
+      
+        if(typeof(req.file)!='undefined'){
+            var fileinfo=req.file.filename;
+            
+            mysqlConnection.query("select PHOTO_PATH from employee where EMP_ID='"+store_id+"'",function(err,resultD){
+                if (err) throw err
+        else{
         
-}
-else{
+        
+            console.log(store_id)
+             fs.unlink('public/assets/img/'+resultD[0].PHOTO_PATH, function (err) {
+                if (err) throw err;
+                // if no error, file has been deleted successfully
+                console.log('File deleted!');
+            }); 
+        }
+        
+        
+            });
+        }
 
-    photo=req.file.filename;
-}
 
-console.log("body data")
-console.log(req.body)
+
+        
+        else{
+
+            fileinfo=req.body.updatephoto;
+        }
+
+
 
 
 
@@ -179,7 +196,7 @@ console.log(req.body)
 
         if(err2) throw err
  
-      let sql1 = "update employee set FIRTS_NAME='"+first_name+"', MIDDLE_NAME='"+middle_name+"', LAST_NAME='"+last_name+"', DATE_OF_BIRTH='"+dateofbirth+"', DATE_OF_JOIN='"+dateofjoining+"', DESIGNATION_ID='"+designation+"', GENDER_ID='"+gender+"', REPORTING_TO_ID='"+ID[0].ID+"', P_EMAIL='"+personal_email+"', W_EMAIL='"+work_email+"', P_PHONE='"+personal_phone+"', W_PHONE='"+work_phone+"', PHOTO_PATH='"+photo+"', COUNTRY_ID='"+country+"' where EMP_ID='"+store_id+"'";
+      let sql1 = "update employee set FIRTS_NAME='"+first_name+"', MIDDLE_NAME='"+middle_name+"', LAST_NAME='"+last_name+"', DATE_OF_BIRTH='"+dateofbirth+"', DATE_OF_JOIN='"+dateofjoining+"', DESIGNATION_ID='"+designation+"', GENDER_ID='"+gender+"', REPORTING_TO_ID='"+ID[0].ID+"', P_EMAIL='"+personal_email+"', W_EMAIL='"+work_email+"', P_PHONE='"+personal_phone+"', W_PHONE='"+work_phone+"', PHOTO_PATH='"+fileinfo+"', COUNTRY_ID='"+country+"' where EMP_ID='"+store_id+"'";
      
 
       
@@ -321,6 +338,7 @@ else{
             }       
             else
             {
+                console.log(emp_id)
                 res.redirect('../../secret/create-user/'+emp_id);
             }
         })
@@ -517,7 +535,8 @@ else{
 
             else
             {
-            
+
+                console.log(emp_id)
                let store_id=result[0].ID
                
                 mysqlConnection.query("select USERNAME,PASSWORD from user where EMP_ID="+store_id+"",function(err,result1)
