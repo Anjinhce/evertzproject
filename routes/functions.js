@@ -506,6 +506,7 @@ else{
     },
     createUser: (req,res) => {
         let emp_id=req.params.id
+
         mysqlConnection.query("select employee.ID,employee.EMP_ID, employee.FIRTS_NAME, employee.MIDDLE_NAME, employee.LAST_NAME, employee.DATE_OF_BIRTH, employee.DATE_OF_JOIN, employee.DESIGNATION_ID, employee.GENDER_ID, employee.REPORTING_TO_ID, employee.P_EMAIL, employee.W_EMAIL, employee.P_PHONE, employee.W_PHONE, employee.PHOTO_PATH, employee.COUNTRY_ID, designation.DESIGNATION, gender.GENDER, country.NAME as country_name  from employee, designation, gender, country where employee.EMP_ID='"+emp_id+"' and designation.ID=employee.DESIGNATION_ID and gender.ID=employee.GENDER_ID and country.ID=employee.COUNTRY_ID ",function(err,result)
         {
             if(err)
@@ -518,7 +519,7 @@ else{
             
                let store_id=result[0].ID
                
-                mysqlConnection.query("select USERNAME,PASSWORD from user where EMP_ID='"+store_id+"'",function(err,result1)
+                mysqlConnection.query("select USERNAME,PASSWORD from user where EMP_ID="+store_id+"",function(err,result1)
                 {
                     if(err)
                     {
@@ -555,6 +556,8 @@ else{
                                                 
                                                 else
                                                 {
+                                                    
+                                                  
                                                     var obj={print:result, print1: result1, print2: result2, print3: result3, print4: result4,R_NAME : R_NAME}
                                                 res.render("../secret/create-user",obj)
                                                 }

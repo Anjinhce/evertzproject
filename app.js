@@ -957,7 +957,7 @@ app.post('/leave_application',urlencodedParser,function(req,res){
         }
         else
         {   
-            console.log(result1[0].ID);
+          
             mysqlConnection.query("SELECT * FROM leave_management, leave_type WHERE leave_type.ID=leave_management.LEAVE_TYPE_ID and EMP_ID='"+result1[0].ID+"' and REGION_id=1",function(err,result){
                 if(err)
                 {
