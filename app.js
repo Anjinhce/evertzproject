@@ -152,7 +152,7 @@ app.post('/secret/add-user',upload_photo.single('photo') ,addUser);
 app.post('/edit/:id',urlencodedParser, editPlayer);
 app.get('/view/:id', viewEmployeePage);
 app.post('/view/:id',urlencodedParser, viewEmployee);
-app.get('/secret/payroll',payroll_page)
+//app.get('/secret/payroll',payroll_page)
 //app.get('/fetch_id',fetch_id)
 app.get("/logout",logout)
 app.get('/login',login)
@@ -953,6 +953,7 @@ app.post('/leave_application',urlencodedParser,function(req,res){
 //retrieving data for leave history and leave details section
   app.get('/secret/leave_home', function(req, res) {
 
+    console.log(req.cookies)
     mysqlConnection.query("SELECT employee.ID, employee.EMP_ID from employee ,user WHERE employee.ID=user.EMP_ID and user.USERNAME='"+req.cookies['username']+"' ",function(err1,result1)
     {
         if(err1)
@@ -961,6 +962,7 @@ app.post('/leave_application',urlencodedParser,function(req,res){
         }
         else
         {   
+            console.log(result1)
           
             mysqlConnection.query("SELECT * FROM leave_management, leave_type WHERE leave_type.ID=leave_management.LEAVE_TYPE_ID and EMP_ID='"+result1[0].ID+"' and REGION_id=1",function(err,result){
                 if(err)
