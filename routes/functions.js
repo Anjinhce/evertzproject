@@ -338,7 +338,7 @@ else{
             }       
             else
             {
-                console.log(emp_id)
+                
                 res.redirect('../../secret/create-user/'+emp_id);
             }
         })
@@ -483,6 +483,7 @@ else{
             }
             else
             {
+                console.log(result)
                 res.render('../secret/edit-experience',{print: result})
             }
         })
@@ -494,21 +495,18 @@ else{
         let designation=req.body.designation
         let from=req.body.from
         let to=req.body.to
-        let uploadedFile = req.files.file;
-        let file_name = uploadedFile.name;
-        let fileExtension = uploadedFile.mimetype.split('/')[1];
-        file_name = emp_id+'_'+company_name+'.'+ fileExtension;
-        if (uploadedFile.mimetype === 'text/plain' || uploadedFile.mimetype === 'application/pdf')
-        {
-            uploadedFile.mv(`public/assets/experience-cert/${file_name}`,function(err)
-            {
-                if(err)
-                {
-                    throw err
-                }
-                else
-                {
-                    mysqlConnection.query("update experience set COMPANY_NAME='"+company_name+"', DESIGNATION='"+designation+"', FROM_DATE='"+from+"', TO_DATE='"+to+"', EXP_CERTIFICATE_PATH='"+file_name+"' where ID='"+exp_id+"'",function(err)
+
+        if(typeof(req.file)!='undefined'){
+            let exp_cert=req.file.filename
+        }
+        else{
+
+            exp_cert=req.body.exp_update
+            
+        }
+       
+        
+        mysqlConnection.query("update experience set COMPANY_NAME='"+company_name+"', DESIGNATION='"+designation+"', FROM_DATE='"+from+"', TO_DATE='"+to+"', EXP_CERTIFICATE_PATH='"+exp_cert+"' where ID='"+exp_id+"'",function(err)
                     {
                         if(err)
                         {
@@ -516,12 +514,13 @@ else{
                         }
                         else
                         {
+                            
                             res.redirect('../../../secret/create-user/'+emp_id);
                         }
                     })
-                }
-            })
-        }
+                
+            
+        
     },
     createUser: (req,res) => {
         let emp_id=req.params.id

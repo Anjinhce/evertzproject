@@ -192,7 +192,7 @@ var upload_exp = multer({storage : storage_exp})
 app.post('/secret/add_experience_details',upload_exp.single('photo0'), add_experience_details)
 app.get('/secret/edit-experience-details/:id/:emp_id', edit_experience_details)
 app.get('/secret/edit-experience/:id/:emp_id',edit_experience)
-app.post('/secret/update_experience/:id/:emp_id',urlencodedParser,updateExperience)
+app.post('/secret/update_experience/:id/:emp_id',upload_exp.single('exp_cert'),updateExperience)
 
 app.get('/secret/edit-personal-details/:id',edit_personal_details)
 
