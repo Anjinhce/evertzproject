@@ -153,7 +153,7 @@ app.post('/edit/:id',urlencodedParser, editPlayer);
 app.get('/view/:id', viewEmployeePage);
 app.post('/view/:id',urlencodedParser, viewEmployee);
 app.get('/secret/payroll',payroll_page)
-app.get('/fetch_id',fetch_id)
+//app.get('/fetch_id',fetch_id)
 app.get("/logout",logout)
 app.get('/login',login)
 app.get('/secret/add-education/:id',addEducation)
