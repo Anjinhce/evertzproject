@@ -497,14 +497,25 @@ else{
         let to=req.body.to
 
         if(typeof(req.file)!='undefined'){
-            let exp_cert=req.file.filename
+            var exp_cert=req.file.filename;
+
+        mysqlConnection.query("select *  from experience  where ID="+exp_id+"",function(err,resultD){
+            if (err) throw err
+    else{
+    
+    
+         fs.unlink('exp_cert/'+resultD[0].EXP_CERTIFICATE_PATH, function (err) {
+            if (err) throw err;
+            // if no error, file has been deleted successfully
+            console.log('File deleted!');
+        }); 
+    }
+})
         }
         else{
-
-            exp_cert=req.body.exp_update
-            
+            exp_cert=req.body.exp_update;
         }
-       
+    
         
         mysqlConnection.query("update experience set COMPANY_NAME='"+company_name+"', DESIGNATION='"+designation+"', FROM_DATE='"+from+"', TO_DATE='"+to+"', EXP_CERTIFICATE_PATH='"+exp_cert+"' where ID='"+exp_id+"'",function(err)
                     {
