@@ -535,6 +535,22 @@ else{
     },
     createUser: (req,res) => {
         let emp_id=req.params.id
+         
+      username ="evertz"+emp_id;
+      password =emp_id;
+
+      mysqlConnection.query("select ID from employee where EMP_ID='"+emp_id+"'",function(err,ID){
+          if(err) throw err
+
+      mysqlConnection.query("insert into user(EMP_ID,USERNAME,PASSWORD) values('"+ID[0].ID+"','"+username+"','"+password+"') ",function(err){
+
+        if(err) throw err
+        else{
+            console.log("user created");
+        }
+      })
+    });
+
 
         mysqlConnection.query("select employee.ID,employee.EMP_ID, employee.FIRTS_NAME, employee.MIDDLE_NAME, employee.LAST_NAME, employee.DATE_OF_BIRTH, employee.DATE_OF_JOIN, employee.DESIGNATION_ID, employee.GENDER_ID, employee.REPORTING_TO_ID, employee.P_EMAIL, employee.W_EMAIL, employee.P_PHONE, employee.W_PHONE, employee.PHOTO_PATH, employee.COUNTRY_ID, designation.DESIGNATION, gender.GENDER, country.NAME as country_name  from employee, designation, gender, country where employee.EMP_ID='"+emp_id+"' and designation.ID=employee.DESIGNATION_ID and gender.ID=employee.GENDER_ID and country.ID=employee.COUNTRY_ID ",function(err,result)
         {
@@ -805,26 +821,26 @@ else{
     //     }
     // })
     // },
-    logout : (req,res) => {
-        if(req.session.isAuthenticated || req.cookies['name']==1)
-    {
-        res.clearCookie('name');
-        req.session.destroy(function(err)
-        {
-            if(err)
-            {
-                console.log(err)
-            }
-            else
-            {
-                res.redirect("/login")
-            }
-        })
-    }
-    },
-    login : (req,res) => {
-        res.render("login")
-    },
+    // logout : (req,res) => {
+    //     if(req.session.isAuthenticated || req.cookies['name']==1)
+    // {
+    //     res.clearCookie('name');
+    //     req.session.destroy(function(err)
+    //     {
+    //         if(err)
+    //         {
+    //             console.log(err)
+    //         }
+    //         else
+    //         {
+    //             res.redirect("/login")
+    //         }
+    //     })
+    // }
+    // },
+    // login : (req,res) => {
+    //     res.render("login")
+    // },
     edit_details : (req,res) => {
         var emp_id=req.params.id;
     mysqlConnection.query("select * from payroll_management where id='"+emp_id+"'",function(err,result)
@@ -840,31 +856,31 @@ else{
         }
     })
     },
-    loginAction : (req,res) => 
-    {
-        mysqlConnection.query("select id,count(*) AS Count_rows from user where USERNAME='"+req.body.username+"' and PASSWORD='"+req.body.password+"'",function(err,result)
-    {
-        if(err)
-        {
-            throw err
-        }
-        else
-        {
-            var count_rows=result[0].Count_rows
-            if(count_rows!=1)
-            {
-                req.session.isAuthenticated=false
-                res.render('login-fail')
-            }
-            else
-            {
-                req.session.isAuthenticated=true
-                res.cookie('name', result[0].id, {expire: 36000000 + Date.now()});
-                res.redirect('../secret/payroll')
-            }
-        }
-    })
-    },
+    // loginAction : (req,res) => 
+    // {
+    //     mysqlConnection.query("select id,count(*) AS Count_rows from user where USERNAME='"+req.body.username+"' and PASSWORD='"+req.body.password+"'",function(err,result)
+    // {
+    //     if(err)
+    //     {
+    //         throw err
+    //     }
+    //     else
+    //     {
+    //         var count_rows=result[0].Count_rows
+    //         if(count_rows!=1)
+    //         {
+    //             req.session.isAuthenticated=false
+    //             res.render('login-fail')
+    //         }
+    //         else
+    //         {
+    //             req.session.isAuthenticated=true
+    //             res.cookie('name', result[0].id, {expire: 36000000 + Date.now()});
+    //             res.redirect('../secret/payroll')
+    //         }
+    //     }
+    // })
+    // },
     list_payroll:(req,res) => {
         mysqlConnection.query("select * from  payroll_management order by id desc limit 0,10",function(err,result){
             if(err)

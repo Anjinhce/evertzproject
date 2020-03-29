@@ -157,8 +157,8 @@ app.get('/view/:id', viewEmployeePage);
 app.post('/view/:id',urlencodedParser, viewEmployee);
 //app.get('/secret/payroll',payroll_page)
 //app.get('/fetch_id',fetch_id)
-app.get("/logout",logout)
-app.get('/login',login)
+//app.get("/logout",logout)
+//app.get('/login',login)
 app.get('/secret/add-education/:id',addEducation)
 app.post('/secret/add_education_details',urlencodedParser , add_education_details)
 app.get('/secret/edit-details/:id',edit_details)
@@ -206,7 +206,7 @@ app.get('/secret/edit-user/:id',edit_personal_details_page)
 app.post('/secret/update-user-details/:id',upload_photo.single('profile'),updateUser)
 
 app.get('/secret/create-user/:id', createUser)
-app.post('/loginAction',urlencodedParser,loginAction)
+//app.post('/loginAction',urlencodedParser,loginAction)
 app.get('/secret/list-payroll', list_payroll)
 app.get('/prev',prev_payroll)
 app.get('/next',next_payroll)
@@ -338,10 +338,9 @@ app.post('/loginAction',urlencodedParser,function(req,res)
             else
             {
                 req.session.isAuthenticated=true
-                res.cookie('name','true',{expire:36000000+Date.now()});
+            
                 res.cookie('username', req.body.username, {expire: 36000000 + Date.now()});
                 res.redirect('../secret/leave_home')
-                
             }
         }
     })
@@ -956,7 +955,7 @@ app.post('/leave_application',urlencodedParser,function(req,res){
 //retrieving data for leave history and leave details section
   app.get('/secret/leave_home', function(req, res) {
 
-    console.log(req.cookies)
+   console.log(req.cookies)
     mysqlConnection.query("SELECT employee.ID, employee.EMP_ID from employee ,user WHERE employee.ID=user.EMP_ID and user.USERNAME='"+req.cookies['username']+"' ",function(err1,result1)
     {
         if(err1)
@@ -966,7 +965,8 @@ app.post('/leave_application',urlencodedParser,function(req,res){
         else
         {   
             console.log(result1)
-          
+          mysqlConnection.query("select * from leave_type",function(err,l_type){
+              if(err) throw err
             mysqlConnection.query("SELECT * FROM leave_management, leave_type WHERE leave_type.ID=leave_management.LEAVE_TYPE_ID and EMP_ID='"+result1[0].ID+"' and REGION_id=1",function(err,result){
                 if(err)
                 {
@@ -974,14 +974,17 @@ app.post('/leave_application',urlencodedParser,function(req,res){
                 }
                 else
                 {
-                    obj = {leaveInfo: result, print1: result1};
+                    obj = {leaveInfo: l_type,leaveInfo1 : result, print1: result1};
                    // console.log(obj.print1);
                     res.render('../secret/leave_home', obj);
                 
                 }
             })
+        })
         }
+    
     })
+
   });
 
  //filling leave type name field of leave application form 
@@ -1389,13 +1392,74 @@ else{
 
 //*****************************user Pernonal Details*********************************************** */
 
-app.get('/secret/user/user-emp',function(req,res){
+app.get('/secret/user/user-emp/:id',function(req,res){
+let emp_id=req.params.id
 
+        mysqlConnection.query("select employee.ID,employee.EMP_ID, employee.FIRTS_NAME, employee.MIDDLE_NAME, employee.LAST_NAME, employee.DATE_OF_BIRTH, employee.DATE_OF_JOIN, employee.DESIGNATION_ID, employee.GENDER_ID, employee.REPORTING_TO_ID, employee.P_EMAIL, employee.W_EMAIL, employee.P_PHONE, employee.W_PHONE, employee.PHOTO_PATH, employee.COUNTRY_ID, designation.DESIGNATION, gender.GENDER, country.NAME as country_name  from employee, designation, gender, country where employee.EMP_ID='"+emp_id+"' and designation.ID=employee.DESIGNATION_ID and gender.ID=employee.GENDER_ID and country.ID=employee.COUNTRY_ID ",function(err,result)
+        {
+            if(err)
+            {
+                throw err
+            }
 
+            else
+            {
 
+                console.log(emp_id)
+               let store_id=result[0].ID
+               
+                mysqlConnection.query("select USERNAME,PASSWORD from user where EMP_ID="+store_id+"",function(err,result1)
+                {
+                    if(err)
+                    {
+                        throw err
+                    }
+                    
+                        mysqlConnection.query("select education_details.ID,education_details.PERCENTAGE, education_details.TYPE_ID, education_details.GRADE_ID, education_details.BRANCH_ID, edu_type.NAME as edu_type_name, edu_branch.NAME as edu_branch_name, grades.NAME as edu_grade_name from education_details,edu_branch,edu_type,grades where EMP_ID='"+store_id+"' and edu_type.ID=education_details.TYPE_ID and edu_branch.ID=education_details.BRANCH_ID and grades.ID=education_details.GRADE_ID",function(err,result2)
+                        {
+                            if(err)
+                            {
+                                throw err
+                            }
+                            
+                                
+                                mysqlConnection.query("select * from employee_bank where EMP_ID='"+store_id+"'",function(err,result3)
+                                        {
+                                            if(err)
+                                        {
+                                            throw err
+                                        }
+                                        
+                                            mysqlConnection.query("select * from experience where EMP_ID='"+store_id+"'",function(err,result4)
+                                            {
+                                                if(err)
+                                                {
+                                                    throw err
+                                                }
+                                                mysqlConnection.query("select e.FIRTS_NAME as Employee, m.REPORTING_TO_ID as reports_to, m.FIRTS_NAME,m.MIDDLE_NAME,m.LAST_NAME from employee e inner join employee m on e.REPORTING_TO_ID = m.ID and e.EMP_ID='"+result[0].EMP_ID+"'",function(err10,R_NAME)
+                                                {
+                                                    if(err10) {
+                                                    
+                                                    throw err10
+                                                    }
+                                                
+                                                else
+                                                {
+                                                    
+                                                  
+                                                    var obj={print:result, print1: result1, print2: result2, print3: result3, print4: result4,R_NAME : R_NAME}
+                                                res.render("../secret/user/user-emp",obj)
+                                                }
+                                            })
+                                        })
+                                    
+                                    })
+                              })
+          
+                            })
+                        }
+                        })
 
-
-    res.render('../secret/user/user-emp');
   
 
 
