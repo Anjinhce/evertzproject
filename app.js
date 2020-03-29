@@ -1389,13 +1389,14 @@ else{
 
 //*****************************user Pernonal Details*********************************************** */
 
-app.get('user/Personal-details',function(req,res){
+app.get('/secret/user/user-emp',function(req,res){
 
 
 
 
 
-    res.redirect('../secret/user/Personal-details');
+    res.render('../secret/user/user-emp');
+  
 
 
 
