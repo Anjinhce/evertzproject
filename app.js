@@ -1367,3 +1367,18 @@ app.get('/report_check',function(req,res)
 
 //*****************************ajax employee check   stopes*/
 
+app.get('/full_emp/:id',function(req,res){
+
+    var emp_id=req.params.id;
+
+    mysqlConnection.query("select EMP_ID from employee where ID="+emp_id+"",function(err,result){
+if(err) throw err
+else{
+
+    
+
+    res.redirect('../../secret/create-user/'+result[0].EMP_ID);
+}
+
+    })
+})
