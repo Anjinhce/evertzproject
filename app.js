@@ -62,6 +62,9 @@ app.set('views', __dirname + '/views');
 app.use(express.static(dir));
 app.use('/secret',authenticate, express.static(path.join(__dirname, 'secret')));
 
+app.set('views', __dirname + '/views');
+
+
 
 var obj={}
 
@@ -1381,4 +1384,22 @@ else{
 }
 
     })
+})
+
+
+//*****************************user Pernonal Details*********************************************** */
+
+app.get('user/Personal-details',function(req,res){
+
+
+
+
+
+    res.redirect('../secret/user/Personal-details');
+
+
+
+
+
+
 })
