@@ -279,9 +279,9 @@ app.get('/fetch_id',function(req,res)
 
 app.get("/secret/logout",function(req,res)
 {
-    if(req.session.isAuthenticated || req.cookies['name']==1)
+    if(req.session.isAuthenticated || req.cookies['username']==1)
     {
-        res.clearCookie('name');
+        res.clearCookie('username');
         req.session.destroy(function(err)
         {
             if(err)
@@ -327,6 +327,10 @@ app.post('/loginAction',urlencodedParser,function(req,res)
         {
             throw err
         }
+      mysqlConnection.query("SELECT employee.EMP_ID from employee,user WHERE employee.ID=user.EMP_ID and user.USERNAME='"+req.body.username+"' ",function(err,result1){
+           if(err) throw err
+
+      
         else
         {
             var count_rows=result[0].Count_rows
@@ -337,13 +341,17 @@ app.post('/loginAction',urlencodedParser,function(req,res)
             }
             else
             {
+                obj = {print: result1};
+               
                 req.session.isAuthenticated=true
             
                 res.cookie('username', req.body.username, {expire: 36000000 + Date.now()});
-                res.redirect('../secret/leave_home')
+                //res.render('../secret/user/header', obj);
+                res.redirect('../secret/user/user-emp/'+result1[0].EMP_ID);
             }
         }
     })
+})
 })
 
 app.get('/secret/contact-success', function(req, res) {
@@ -953,7 +961,7 @@ app.post('/leave_application',urlencodedParser,function(req,res){
    })
 
 //retrieving data for leave history and leave details section
-  app.get('/secret/leave_home', function(req, res) {
+  app.get('/secret/user/leave_home', function(req, res) {
 
    console.log(req.cookies)
     mysqlConnection.query("SELECT employee.ID, employee.EMP_ID from employee ,user WHERE employee.ID=user.EMP_ID and user.USERNAME='"+req.cookies['username']+"' ",function(err1,result1)
@@ -972,11 +980,15 @@ app.post('/leave_application',urlencodedParser,function(req,res){
                 {
                     throw err
                 }
+
                 else
                 {
-                    obj = {leaveInfo: l_type,leaveInfo1 : result, print1: result1};
+                    req.session.isAuthenticated=true;
+                    obj = {leaveInfo: l_type,leaveInfo1 : result, print1: result1,print:result};
                    // console.log(obj.print1);
-                    res.render('../secret/leave_home', obj);
+
+                    res.render('../secret/user/leave_home', obj);
+                  
                 
                 }
             })
@@ -1133,18 +1145,21 @@ else{
 
 //******************************training user***************************************************
 
-app.get('/secret/training_user',function(req,res){
+app.get('/secret/user/training_user',function(req,res){
+mysqlConnection.query("SELECT employee.EMP_ID from employee,user WHERE employee.ID=user.EMP_ID and user.USERNAME='"+req.cookies['username']+"'",function(err,result1){
+if(err) throw err
 
     mysqlConnection.query('select * from training where status=1',function(err,result){
         if(err) throw err
  else{
- 
-     obj = {train_data: result};
+    req.session.isAuthenticated=true;
+     obj = {train_data: result,print : result1};
      console.log(obj);
-     res.render('../secret/training_user', obj);
+     res.render('../secret/user/training_user', obj);
  
  }
  })
+})
 })
 
 //**************************************video play in training_user starts  */
@@ -1153,7 +1168,7 @@ app.get('/secret/training_user',function(req,res){
 
 
 
-    app.get('/secret/video/:id', function(req, res) {
+    app.get('/secret/user/video/:id', function(req, res) {
 
      var video_id = req.params.id;  
      mysqlConnection.query("select VIDEO_PATH from training where ID="+video_id+"",function(err,result){
@@ -1162,7 +1177,7 @@ else{
 
 
 
- 
+    req.session.isAuthenticated=true;
      var path = result[0].VIDEO_PATH;
      console.log("path file")
  console.log(path);
@@ -1181,7 +1196,7 @@ else{
 
 // **************************training download *******************starts 
 
-app.get('/secret/training_download/:id',function(req,res){
+app.get('training_download/:id',function(req,res){
 
     file_id=req.params.id
 mysqlConnection.query("select * FROM training WHERE ID='"+file_id+"'",function(err,result){
@@ -1446,9 +1461,12 @@ let emp_id=req.params.id
                                                 else
                                                 {
                                                     
-                                                  
+                                                console.log(result);  
                                                     var obj={print:result, print1: result1, print2: result2, print3: result3, print4: result4,R_NAME : R_NAME}
+                                                   
                                                 res.render("../secret/user/user-emp",obj)
+
+                                             
                                                 }
                                             })
                                         })
